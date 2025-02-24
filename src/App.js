@@ -4,6 +4,7 @@ import InventoryLayout from './Inventory/InventoryLayout';
 import LoginPage from './Inventory/Pages/LoginPage/LoginPage';
 import DashBoard from './Inventory/Pages/DashBoard/DashBoard';
 import Orders from './Inventory/Pages/Orders/Orders';
+import Finance from './Inventory/Pages/Finance/Finance';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route index element={<DashBoard/>}/>
       <Route path='dashboard' element={<DashBoard/>}/>
       <Route path='orders' element={<Orders/>}/>
+      <Route path='finance' element={<Finance/>}/>
     </Route>
     <Route path='/login' element={<LoginPage/>}/>
   </Routes>
