@@ -5,17 +5,28 @@ import leftArrow from "../../Assets/common/leftArrow.svg";
 
 function Finance() {
   const transactions = [
-    {
-      id: "652542",
-      date: "17 Jan, 2025",
-      revenue: "AED 240",
-      expense: "AED 240",
-      profit: "AED 240",
-      orderId: "0010021",
-      paymentMode: "Online",
-      status: "Complete",
-      taxAmount: "AED 240",
-    },
+    // {
+    //   id: "652542",
+    //   date: "17 Jan, 2025",
+    //   revenue: "AED 240",
+    //   expense: "AED 240",
+    //   profit: "AED 240",
+    //   orderId: "0010021",
+    //   paymentMode: "Online",
+    //   status: "Complete",
+    //   taxAmount: "AED 240",
+    // },
+    // {
+    //   id: "652542",
+    //   date: "17 Jan, 2025",
+    //   revenue: "AED 240",
+    //   expense: "AED 240",
+    //   profit: "AED 240",
+    //   orderId: "0010021",
+    //   paymentMode: "Online",
+    //   status: "Pending",
+    //   taxAmount: "AED 240",
+    // },
   ];
   const rowsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
@@ -35,9 +46,10 @@ function Finance() {
         </div>
         <div className="bg-white p-6 mt-4 h-full min-h-svh overflow-x-auto">
           <table className="min-w-full">
-            <thead className="bg-[#F0F0F0] h-10 rounded border border-[#D6D6D6]">
-              <tr>
-                <th className="p-3 font-medium text-[#2F3139] text-sm ">
+            <thead className="bg-[#F0F0F0] h-10  ">
+            {/* border border-[#D6D6D6] */}
+              <tr >
+                <th className="p-3 font-medium rounded-tl-lg text-[#2F3139] text-sm ">
                   Transaction ID
                 </th>
                 <th className="p-3 font-medium text-[#2F3139] text-sm">Date</th>
@@ -59,7 +71,7 @@ function Finance() {
                 <th className="p-3 font-medium text-[#2F3139] text-sm">
                   Status
                 </th>
-                <th className="p-3 font-medium text-[#2F3139] text-sm">Tax</th>
+                <th className="p-3 font-medium text-[#2F3139] rounded-tr-lg text-sm">Tax</th>
               </tr>
             </thead>
             <tbody>
