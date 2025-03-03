@@ -89,7 +89,7 @@ function Orders() {
             </div>
           </div>
 
-          <div className="bg-[#F0F0F0] px-1 py-1 w-fit mt-8 rounded-lg ">
+          <div className="bg-[#F0F0F0] px-1 py-1 w-fit mt-8 rounded-lg ">  
             <div className="flex">
               {tabs.map((tab) => (
                 <div
@@ -177,5 +177,5 @@ function Orders() {
     </div>
   );
 }
-
+ 
 export default Orders;

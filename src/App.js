@@ -5,6 +5,7 @@ import LoginPage from './Inventory/Pages/LoginPage/LoginPage';
 import DashBoard from './Inventory/Pages/DashBoard/DashBoard';
 import Orders from './Inventory/Pages/Orders/Orders';
 import Finance from './Inventory/Pages/Finance/Finance';
+import Product from './Inventory/Pages/Product/Product';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Route path='dashboard' element={<DashBoard/>}/>
       <Route path='orders' element={<Orders/>}/>
       <Route path='finance' element={<Finance/>}/>
+      <Route path='product' element={<Product/>}/>
     </Route>
     <Route path='/login' element={<LoginPage/>}/>
   </Routes>
