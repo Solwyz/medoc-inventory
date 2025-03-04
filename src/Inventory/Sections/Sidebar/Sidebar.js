@@ -13,7 +13,8 @@ function Sidebar() {
         { name:'Inventory',path:"inventory"},
         {name:'Products', path:"product"},
         {name:'Stocks',path:"stock"},
-        {name:'Purchase & Sales', path: "purchaseSales"}
+        {name:'Purchase & Sales', path: "purchaseSales"},
+        {name:'Supplier & Customer', path: "supplierCustomer"}
       ].map((item, index) => (
         <Link to={item.path} >
           <div key={index} className="px-4 py-[14px] hover:bg-[#423664] cursor-pointer hover:rounded-lg mt-2">
