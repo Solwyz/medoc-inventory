@@ -14,6 +14,10 @@ import eyeIconBlack from "../../Assets/Product Section/visibility.svg";
 import editBlue from "../../Assets/Product Section/Frame 1261155651 (1).svg";
 import editBlack from "../../Assets/Product Section/Frame 1261155651.svg";
 import deleteBlack from "../../Assets/Product Section/Frame 1261155650.svg";
+import ProductImg from "../../Assets/Product Section/productImg/Rectangle 9234.png";
+import Close from "../../Assets/Product Section/close.svg";
+import CloseRed from "../../Assets/Product Section/closeRed.svg";
+import ProductAddForm from "./ProductAddForm/ProductAddForm";
 
 function Product() {
     const [checkedItems, setCheckedItems] = useState({});
@@ -22,6 +26,9 @@ function Product() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [orderToDelete, setOrderToDelete] = useState(null);
     const [hoverAction, setHoverAction] = useState(null)
+    const [isViewModal, setIsViewModal] = useState(false);
+    const [selectProduct, setSelectProduct] = useState(null)
+    const [hoverClose,setHoverClose]= useState(null)
 
 
 
@@ -73,6 +80,12 @@ function Product() {
         setOrderToDelete(null);
     };
 
+    const handleViewModal = (id) => {
+        setSelectProduct(id)
+        setIsViewModal(true)
+
+    }
+
     return (
         <div className="bg-[#f7f7f7] w-full min-w-max min-h-svh h-full">
             <div className="h-[72px]"></div>
@@ -80,11 +93,13 @@ function Product() {
                 <div className="flex items-center justify-between">
                     <div className=""> <div className="text-[20px] leading-[24px] font-medium">Product Management</div></div>
                     <div className="flex">
-                        <div className="border rounded-lg  py-[13px] px-[16px] justify-center items-center text-[14px] font-normal text-white bg-[#415BAD] hover:bg-[#304BA0] flex ">
+                        <div
+                      
+                         className="border rounded-lg  py-[13px] px-[16px] cursor-pointer justify-center items-center text-[14px] font-normal text-white hover:bg-[#415BAD] bg-[#304BA0] flex ">
                             <img className="mr-2" src={AddButn} alt="" />
                             Add Product
                         </div>
-                        <div className=" border border-[#D5D5D5] rounded-lg justify-center items-center py-[13px] px-4 text-[#696A70] flex ml-4">
+                        <div className=" border border-[#D5D5D5] rounded-lg justify-center cursor-pointer items-center py-[13px] px-4 text-[#696A70] flex ml-4">
                             <img className="mr-2 w-4 h-4" src={imprt} alt="" />
                             Import
                         </div>
@@ -164,18 +179,20 @@ function Product() {
                                                 <button className={`py-1 px-4 rounded-lg ${statusStyles[status]}`}>{status}</button>
                                             </td>
                                             <td className="p-4 font-medium text-center justify-between items-start flex text-sm">
+
+                                                <button
+                                                    onClick={() => handleViewModal({ ProductId, Price, ProductDetailems, Quantity, status })}
+                                                    onMouseEnter={() => setHoverAction(`edit- ${ProductId}`)}
+                                                    onMouseLeave={() => setHoverAction(null)}
+                                                >
+                                                    <img src={hoverAction === `edit- ${ProductId}` ? eyeIconBlue : eyeIconBlack} alt="" />
+                                                </button>
                                                 <button
                                                     onClick={() => handleDeleteClick(ProductId)}
                                                     onMouseEnter={() => setHoverAction(`delete- ${ProductId}`)}
                                                     onMouseLeave={() => setHoverAction(null)}
                                                 >
                                                     <img src={hoverAction === `delete- ${ProductId}` ? Delete : deleteBlack} alt="delete" />
-                                                </button>
-                                                <button
-                                                    onMouseEnter={() => setHoverAction(`edit- ${ProductId}` )}
-                                                    onMouseLeave={() => setHoverAction(null)}
-                                                >
-                                                    <img src={hoverAction === `edit- ${ProductId}` ? eyeIconBlue : eyeIconBlack} alt="" />
                                                 </button>
                                                 <button
                                                     onMouseEnter={() => setHoverAction(`view- ${ProductId}`)}
@@ -207,7 +224,44 @@ function Product() {
                     </div>
                 </div>
             )}
+
+            {isViewModal && selectProduct && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
+                    <div className="bg-white p-6 rounded-lg shadow-lg ">
+                       <div className="flex items-center justify-between">
+                            <h1 className="font-medium text-[16px]">Product Details</h1>
+                            <button
+                            onMouseEnter={()=>setHoverClose(true)}
+                            onMouseLeave={()=>setHoverClose(false)}
+                            >
+                              
+                                    <img
+                                        className="" 
+                                        onClick={() => setIsViewModal(false)}
+                                        src={hoverClose=== true ? CloseRed:Close} alt="" />
+                                </button>
+                       </div>
+                        <div className="flex mt-10">
+                            <div>
+                                <img className="w-[210px] h-[210px] " src={ProductImg} alt="" />
+                            </div>
+                            <div className='ml-10'>
+                                <p><strong>Product ID:</strong> {selectProduct.ProductId}</p>
+                                <p><strong>Product Detail:</strong> {selectProduct.ProductDetailems}</p>
+                                <p><strong>Price:</strong> {selectProduct.Price}</p>
+                                <p><strong>Quantity:</strong> {selectProduct.Quantity}</p>
+                                <p><strong>Status:</strong> {selectProduct.status}</p>
+                            </div>
+                        </div>
+                        <div className="flex mt-4">
+                           
+                        </div>
+                    </div>
+                </div>
+            )}
+           
         </div>
+
     );
 }
 
