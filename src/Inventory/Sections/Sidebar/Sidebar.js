@@ -13,12 +13,14 @@ function Sidebar() {
   return (
     <div className="fixed top-[72px] left-0 w-[242px] h-[calc(100vh-72px)] bg-[#2B2342] px-4 py-4 overflow-y-auto">
       {[
+
         { name: 'Dashboard', path: 'dashboard',img:Dashboard },
         { name: 'Orders', path: "orders" ,img:Orders },
         { name: 'Finance', path:"finance" ,img:Finance},
         { name:'Products',path:"product" ,img:Products},
         {name:'Purchase & Sales', path:"purchaseSales" ,img:Supplier},
         {name:'Supplier & Customer', path: "purchaseSales" ,img:Purchase}
+
       ].map((item, index) => (
         <Link to={item.path} >
           <div key={index} className="px-4 py-[14px] hover:bg-[#423664] cursor-pointer hover:rounded-lg mt-2">
