@@ -19,7 +19,7 @@ function Sidebar() {
         { name: 'Finance', path:"finance" ,img:Finance},
         { name:'Products',path:"product" ,img:Products},
         {name:'Purchase & Sales', path:"purchaseSales" ,img:Supplier},
-        {name:'Supplier & Customer', path: "purchaseSales" ,img:Purchase}
+        {name:'Supplier & Customer', path: "supplierCustomer" ,img:Purchase}
 
       ].map((item, index) => (
         <Link to={item.path} >
