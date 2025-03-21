@@ -70,7 +70,7 @@ function Orders() {
     }
 
     return (
-        <div className="bg-[#f7f7f7] w-full min-w-max  min-h-svh h-full">
+        <div className="bg-[#f7f7f7] w-full  min-h-svh h-full">
             <div className="h-[72px]"></div>
             <div className="ml-[242px] bg-[#f7f7f7] px-6 py-8">
                 <div className="flex items-center justify-between">
@@ -80,9 +80,7 @@ function Orders() {
                         <div className="text-[14px] font-normal">Create new</div>
                     </div>
                 </div>
-
-                <div className="bg-white p-6 mt-8 rounded-lg h-full min-h-svh">
-
+                <div className="bg-white p-6 mt-8 rounded-t-lg h-full">
                     <div className="flex items-center justify-between">
                         <div>
                             <div className="bg-[#F0F0F0] px-1 py-1 w-fit rounded-lg">
@@ -106,144 +104,150 @@ function Orders() {
                         </div>
 
                     </div>
+                </div>
+
+                <div className="bg-white p-6 w rounded-b-lg h-full min-h-svh  overflow-x-auto w-min-[1854px] w-full">
+
+
 
                     {activeTab === "Supplier" && (
-
-                        <div>
-                            {products.length === 0 ? (
-                                <div className="flex flex-col items-center justify-center mt-[214px]">
-                                    <img src={OrderListIsEmpty} alt="Empty Order List" className="w-[156px] h-[87px]" />
-                                    <h1 className="text-[14px] font-normal mt-1 text-[#696A70]">This list is empty</h1>
-                                </div>
-                            ) : (
-                                <div className="mt-4">
-                                    <table className="w-full bg-white mt-4 border">
-                                        <thead className="bg-[#F0F0F0] px-6 py-4">
-                                            <tr>
-                                                <th className="p-3 font-medium text-center text-sm flex items-center">
-                                                    <img
-                                                        src={selectAllChecked ? checkedBox : checkBox}
-                                                        className="mr-4 cursor-pointer"
-                                                        alt="select all"
-                                                        onClick={toggleSelectAll}
-                                                    />
-                                                    Product ID
-                                                </th>
-                                                <th className="p-3 font-medium text-center text-sm">Supplier Name</th>
-                                                <th className="p-3 font-medium text-center text-sm">Product Name</th>
-                                                <th className="p-3 font-medium text-center text-sm">Company Name</th>
-                                                <th className="p-3 font-medium text-center text-sm">Contact Person Name</th>
-                                                <th className="p-3 font-medium text-center text-sm">Phone Number</th>
-                                                <th className="p-3 font-medium text-center text-sm">Email Address</th>
-                                                <th className="p-3 font-medium text-center text-sm">GST / Tax ID</th>
-                                                <th className="p-3 font-medium text-center text-sm">State</th>
-                                                <th className="p-3 font-medium text-center text-sm">Account Number</th>
-                                                <th className="p-3 font-medium text-center text-sm">Contract Start Date</th>
-                                                <th className="p-3 font-medium text-center text-sm">Contract end Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {products.map(({ id, supplierId, supplierName, productName, companyName, contactPerson, phone, email, taxID, state, accountNumber, contractStartDate, contractEndDate, supplier, totalAmount, status, purchaseOrderId }) => (
-                                                <tr key={id}>
-                                                    <td className="p-3 font-medium text-center text-sm flex items-center">
-                                                        <img src={checkedItems[id] ? checkedBox : checkBox} className="mr-4" alt=""
-                                                            onClick={() => toggleCheckbox(id)} />
-                                                        {supplierId}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{supplierName}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{productName}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{companyName}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{contactPerson}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{phone}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{email}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{taxID}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{state}</td>
-                                                    {/* <td className="p-3 font-normal text-center text-[12px]">
-                                                <button className={`py-1 px-4 rounded-lg ${statusStyles[status]}`}>{status}</button>
-                                            </td> */}
-                                                    <td className="p-3 font-medium text-center text-sm">{accountNumber}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{contractStartDate}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{contractEndDate}</td>
-                                                    {/* <td className="p-3 font-medium text-center text-sm">
-                                                <button onClick={() => handleDeleteClick(id)}>
-                                                    <img src={Delete} alt="delete" />
-                                                </button>
-                                            </td> */}
+                        <div className="w-full overflow-x-auto h-svh">
+                            <div className="min-w-[1800px]">
+                                {products.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center mt-[214px]">
+                                        <img src={OrderListIsEmpty} alt="Empty Order List" className="w-[156px] h-[87px]" />
+                                        <h1 className="text-[14px] font-normal mt-1 text-[#696A70]">This list is empty</h1>
+                                    </div>
+                                ) : (
+                                    <div className="mt-4">
+                                        <table className="w-full bg-white mt-4 border">
+                                            <thead className="bg-[#F0F0F0] px-6 py-4">
+                                                <tr>
+                                                    <th className="p-3 font-medium text-center text-sm flex items-center">
+                                                        <img
+                                                            src={selectAllChecked ? checkedBox : checkBox}
+                                                            className="mr-4 cursor-pointer"
+                                                            alt="select all"
+                                                            onClick={toggleSelectAll}
+                                                        />
+                                                        Product ID
+                                                    </th>
+                                                    <th className="p-3 font-medium text-center text-sm">Supplier Name</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Product Name</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Company Name</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Contact Person Name</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Phone Number</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Email Address</th>
+                                                    <th className="p-3 font-medium text-center text-sm">GST / Tax ID</th>
+                                                    <th className="p-3 font-medium text-center text-sm">State</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Account Number</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Contract Start Date</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Contract End Date</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
+                                            </thead>
+                                            <tbody>
+                                                {products.map(({ id, supplierId, supplierName, productName, companyName, contactPerson, phone, email, taxID, state, accountNumber, contractStartDate, contractEndDate }) => (
+                                                    <tr key={id}>
+                                                        <td className="p-3 font-medium text-center text-sm flex items-center">
+                                                            <img
+                                                                src={checkedItems[id] ? checkedBox : checkBox}
+                                                                className="mr-4 cursor-pointer"
+                                                                alt=""
+                                                                onClick={() => toggleCheckbox(id)}
+                                                            />
+                                                            {supplierId}
+                                                        </td>
+                                                        <td className="p-3 font-medium text-center text-sm">{supplierName}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{productName}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{companyName}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{contactPerson}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{phone}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{email}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{taxID}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{state}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{accountNumber}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{contractStartDate}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{contractEndDate}</td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     )}
 
+
                     {activeTab === "Customer" && (
 
-                        <div>
-                            {products.length === 0 ? (
-                                <div className="flex flex-col items-center justify-center mt-[214px]">
-                                    <img src={OrderListIsEmpty} alt="Empty Order List" className="w-[156px] h-[87px]" />
-                                    <h1 className="text-[14px] font-normal mt-1 text-[#696A70]">This list is empty</h1>
-                                </div>
-                            ) : (
-                                <div className="mt-4">
-                                    <table className="w-full bg-white mt-4 border">
-                                        <thead className="bg-[#F0F0F0] px-6 py-4">
-                                            <tr>
-                                                <th className="p-3 font-medium text-center text-sm flex items-center">
-                                                    <img
-                                                        src={selectAllChecked ? checkedBox : checkBox}
-                                                        className="mr-4 cursor-pointer"
-                                                        alt="select all"
-                                                        onClick={toggleSelectAll}
-                                                    />
-                                                    Customer Name
-                                                </th>
-                                                <th className="p-3 font-medium text-center text-sm">Company Name</th>
-                                                <th className="p-3 font-medium text-center text-sm">Contact Person Name</th>
-                                                <th className="p-3 font-medium text-center text-sm">Phone Number</th>
-                                                <th className="p-3 font-medium text-center text-sm">Email Address</th>
-                                                <th className="p-3 font-medium text-center text-sm">Product Name</th>
-                                                <th className="p-3 font-medium text-center text-sm">Company Name</th>
-                                                <th className="p-3 font-medium text-center text-sm">State</th>
-                                                <th className="p-3 font-medium text-center text-sm">GST / Tax ID</th>
-                                                <th className="p-3 font-medium text-center text-sm">Account Number</th>
-                                                <th className="p-3 font-medium text-center text-sm">Contract Start Date</th>
-                                                <th className="p-3 font-medium text-center text-sm">Contract Expiry Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {products.map(({ id, supplierId, supplierName, productName, companyName, contactPerson, phone, email, taxID, state, accountNumber, contractStartDate, contractEndDate, supplier, totalAmount, status, purchaseOrderId }) => (
-                                                <tr key={id}>
-                                                    <td className="p-3 font-medium text-center text-sm flex items-center">
-                                                        <img src={checkedItems[id] ? checkedBox : checkBox} className="mr-4" alt=""
-                                                            onClick={() => toggleCheckbox(id)} />
-                                                        {supplierId}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{supplierName}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{productName}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{companyName}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{contactPerson}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{phone}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{email}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{taxID}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{state}</td>
-                                                    {/* <td className="p-3 font-normal text-center text-[12px]">
-                        <button className={`py-1 px-4 rounded-lg ${statusStyles[status]}`}>{status}</button>
-                    </td> */}
-                                                    <td className="p-3 font-medium text-center text-sm">{accountNumber}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{contractStartDate}</td>
-                                                    <td className="p-3 font-medium text-center text-sm">{contractEndDate}</td>
-                                                    {/* <td className="p-3 font-medium text-center text-sm">
-                        <button onClick={() => handleDeleteClick(id)}>
-                            <img src={Delete} alt="delete" />
-                        </button>
-                    </td> */}
+                        <div className="w-full overflow-x-auto h-svh">
+                           <div className="min-w-[1800px]">
+                                {products.length === 0 ? (
+                                    <div className="flex flex-col items-center justify-center mt-[214px]">
+                                        <img src={OrderListIsEmpty} alt="Empty Order List" className="w-[156px] h-[87px]" />
+                                        <h1 className="text-[14px] font-normal mt-1 text-[#696A70]">This list is empty</h1>
+                                    </div>
+                                ) : (
+                                    <div className="mt-4">
+                                        <table className="w-full bg-white mt-4 border">
+                                            <thead className="bg-[#F0F0F0] px-6 py-4">
+                                                <tr>
+                                                    <th className="p-3 font-medium text-center text-sm flex items-center">
+                                                        <img
+                                                            src={selectAllChecked ? checkedBox : checkBox}
+                                                            className="mr-4 cursor-pointer"
+                                                            alt="select all"
+                                                            onClick={toggleSelectAll}
+                                                        />
+                                                        Customer Name
+                                                    </th>
+                                                    <th className="p-3 font-medium text-center text-sm">Company Name</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Contact Person Name</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Phone Number</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Email Address</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Product Name</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Company Name</th>
+                                                    <th className="p-3 font-medium text-center text-sm">State</th>
+                                                    <th className="p-3 font-medium text-center text-sm">GST / Tax ID</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Account Number</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Contract Start Date</th>
+                                                    <th className="p-3 font-medium text-center text-sm">Contract Expiry Date</th>
                                                 </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                </div>
-                            )}
+                                            </thead>
+                                            <tbody>
+                                                {products.map(({ id, supplierId, supplierName, productName, companyName, contactPerson, phone, email, taxID, state, accountNumber, contractStartDate, contractEndDate, supplier, totalAmount, status, purchaseOrderId }) => (
+                                                    <tr key={id}>
+                                                        <td className="p-3 font-medium text-center text-sm flex items-center">
+                                                            <img src={checkedItems[id] ? checkedBox : checkBox} className="mr-4" alt=""
+                                                                onClick={() => toggleCheckbox(id)} />
+                                                            {supplierId}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{supplierName}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{productName}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{companyName}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{contactPerson}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{phone}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{email}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{taxID}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{state}</td>
+                                                        {/* <td className="p-3 font-normal text-center text-[12px]">
+                            <button className={`py-1 px-4 rounded-lg ${statusStyles[status]}`}>{status}</button>
+                        </td> */}
+                                                        <td className="p-3 font-medium text-center text-sm">{accountNumber}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{contractStartDate}</td>
+                                                        <td className="p-3 font-medium text-center text-sm">{contractEndDate}</td>
+                                                        {/* <td className="p-3 font-medium text-center text-sm">
+                            <button onClick={() => handleDeleteClick(id)}>
+                                <img src={Delete} alt="delete" />
+                            </button>
+                        </td> */}
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                )}
+                           </div>
                         </div>
                     )}
 
