@@ -18,6 +18,7 @@ import ProductImg from "../../Assets/Product Section/productImg/Rectangle 9234.p
 import Close from "../../Assets/Product Section/close.svg";
 import CloseRed from "../../Assets/Product Section/closeRed.svg";
 import ProductAddForm from "./ProductAddForm/ProductAddForm";
+import { Link } from "react-router-dom";
 
 function Product() {
     const [checkedItems, setCheckedItems] = useState({});
@@ -28,7 +29,7 @@ function Product() {
     const [hoverAction, setHoverAction] = useState(null)
     const [isViewModal, setIsViewModal] = useState(false);
     const [selectProduct, setSelectProduct] = useState(null)
-    const [hoverClose,setHoverClose]= useState(null)
+    const [hoverClose, setHoverClose] = useState(null)
 
 
 
@@ -56,8 +57,8 @@ function Product() {
 
 
     const orders = [
-        { ProductId: 1, Price: "AED 240", ProductDetailems: "Multivitamin Vitamin Healthkart Tablet", Quantity: "100ml", payment: "COD", invoice: "CT/12/2544", status: 'In Stock' },
-        { ProductId: 2, Price: "AED 360", ProductDetailems: "Multivitamin Vitamin Healthkart Tablet", Quantity: "100ml", payment: "Online", invoice: "CT/12/2545", status: "Out of Stock" },
+        { ProductId: 1, Price: "AED 240", ProductDetailems: "Multivitamin Vitamin Healthkart Tablet", ProductDescription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", Brand: "Cipla", Quantity: "100ml", payment: "COD", invoice: "CT/12/2544", status: 'In Stock' },
+        { ProductId: 2, Price: "AED 360", ProductDetailems: "Multivitamin Vitamin Healthkart Tablet", ProductDescription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", Brand: "Cipla", Quantity: "100ml", payment: "Online", invoice: "CT/12/2545", status: "Out of Stock" },
 
     ];
 
@@ -93,12 +94,13 @@ function Product() {
                 <div className="flex items-center justify-between">
                     <div className=""> <div className="text-[20px] leading-[24px] font-medium">Product Management</div></div>
                     <div className="flex">
-                        <div
-                      
-                         className="border rounded-lg  py-[13px] px-[16px] cursor-pointer justify-center items-center text-[14px] font-normal text-white hover:bg-[#415BAD] bg-[#304BA0] flex ">
-                            <img className="mr-2" src={AddButn} alt="" />
-                            Add Product
-                        </div>
+                        <Link to={"addproduct"}>
+                            <div
+                                className="border rounded-lg  py-[13px] px-[16px] cursor-pointer justify-center items-center text-[14px] font-normal text-white hover:bg-[#415BAD] bg-[#304BA0] flex ">
+                                <img className="mr-2" src={AddButn} alt="" />
+                                Add Product
+                            </div>
+                        </Link>
                         <div className=" border border-[#D5D5D5] rounded-lg justify-center cursor-pointer items-center py-[13px] px-4 text-[#696A70] flex ml-4">
                             <img className="mr-2 w-4 h-4" src={imprt} alt="" />
                             Import
@@ -118,7 +120,7 @@ function Product() {
                                 <input type="text" placeholder="Filter" className="outline-none w-full" />
                             </div>
                         </div>
-                        <div className="border rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4">
+                        <div className="border rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
                             <img className="mr-2" src={Export} alt="" />
                             Export
                         </div>
@@ -166,7 +168,7 @@ function Product() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {orders.map(({ ProductId, Price, ProductDetailems, Quantity, status }) => (
+                                    {orders.map(({ ProductId, Price, ProductDetailems, ProductDescription, Brand, Quantity, status }) => (
                                         <tr key={ProductId}>
                                             <td className="p-4 font-medium text-start text-sm flex items-center">
                                                 <img src={checkedItems[ProductId] ? checkedBox : checkBox} className="mr-4" alt=""
@@ -181,7 +183,7 @@ function Product() {
                                             <td className="p-4 font-medium text-center justify-between items-start flex text-sm">
 
                                                 <button
-                                                    onClick={() => handleViewModal({ ProductId, Price, ProductDetailems, Quantity, status })}
+                                                    onClick={() => handleViewModal({ ProductId, Price, ProductDetailems, Brand, ProductDescription, Quantity, status })}
                                                     onMouseEnter={() => setHoverAction(`edit- ${ProductId}`)}
                                                     onMouseLeave={() => setHoverAction(null)}
                                                 >
@@ -228,38 +230,43 @@ function Product() {
             {isViewModal && selectProduct && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
                     <div className="bg-white p-6 rounded-lg shadow-lg ">
-                       <div className="flex items-center justify-between">
+                        <div className="flex items-center justify-between">
                             <h1 className="font-medium text-[16px]">Product Details</h1>
                             <button
-                            onMouseEnter={()=>setHoverClose(true)}
-                            onMouseLeave={()=>setHoverClose(false)}
+                                onMouseEnter={() => setHoverClose(true)}
+                                onMouseLeave={() => setHoverClose(false)}
                             >
-                              
-                                    <img
-                                        className="" 
-                                        onClick={() => setIsViewModal(false)}
-                                        src={hoverClose=== true ? CloseRed:Close} alt="" />
-                                </button>
-                       </div>
+
+                                <img
+                                    className=""
+                                    onClick={() => setIsViewModal(false)}
+                                    src={hoverClose === true ? CloseRed : Close} alt="" />
+                            </button>
+                        </div>
                         <div className="flex mt-10">
                             <div>
                                 <img className="w-[210px] h-[210px] " src={ProductImg} alt="" />
                             </div>
                             <div className='ml-10'>
-                                <p><strong>Product ID:</strong> {selectProduct.ProductId}</p>
-                                <p><strong>Product Detail:</strong> {selectProduct.ProductDetailems}</p>
-                                <p><strong>Price:</strong> {selectProduct.Price}</p>
-                                <p><strong>Quantity:</strong> {selectProduct.Quantity}</p>
-                                <p><strong>Status:</strong> {selectProduct.status}</p>
+
+                                <div className="text-[16px] font-medium"> {selectProduct.ProductDetailems}</div>
+                                <div className="text-[16px] text-[#787878] font-normal mt-2">{selectProduct.ProductDescription.split(' ').slice(0, 7).join(' ')}</div>
+                                <div className="text-[16px] text-[#787878] font-normal">{selectProduct.ProductDescription.split(' ').slice(7).join(' ')}</div>
+                                <div className="mt-8">
+                                    <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium " ><div>Brand:</div><div className="text-black">{selectProduct.Brand}</div></div>
+                                    <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium  "><div>Quantity:</div><div className="text-black">{selectProduct.Quantity}</div></div>
+                                    <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium " ><div>Price:</div><div className="text-black">{selectProduct.Price}</div></div>
+
+                                </div>
                             </div>
                         </div>
                         <div className="flex mt-4">
-                           
+
                         </div>
                     </div>
                 </div>
             )}
-           
+
         </div>
 
     );
