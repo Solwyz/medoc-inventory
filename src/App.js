@@ -8,23 +8,25 @@ import Finance from './Inventory/Pages/Finance/Finance';
 import PurchaseSales from './Inventory/Pages/Purchase&Sales/PurchaseSales';
 import SupplierCustomer from './Inventory/Pages/Supplier&Customer/SupplierCustomer';
 import Product from './Inventory/Pages/Product/Product';
+import ProductAddForm from './Inventory/Pages/Product/ProductAddForm/ProductAddForm';
 
 function App() {
   return (
     <div className="App font-AnekLatin">
 
-      <Routes>
-        <Route path="/" element={<InventoryLayout />}>
-          <Route index element={<DashBoard />} />
-          <Route path='dashboard' element={<DashBoard />} />
-          <Route path='orders' element={<Orders />} />
-          <Route path='finance' element={<Finance />} />
-          <Route path='purchaseSales' element={<PurchaseSales />} />
-          <Route path='supplierCustomer' element={<SupplierCustomer />} />
-          <Route path='product' element={<Product />} />
-        </Route>
-        <Route path='/login' element={<LoginPage />} />
-      </Routes>
+  <Routes>
+    <Route path="/" element={<InventoryLayout/>}>
+      <Route index element={<DashBoard/>}/>
+      <Route path='dashboard' element={<DashBoard/>}/>
+      <Route path='orders' element={<Orders/>}/>
+      <Route path='finance' element={<Finance/>}/>
+      <Route path='purchaseSales' element={<PurchaseSales/>}/>
+      <Route path='supplierCustomer' element={<SupplierCustomer/>}/>
+      <Route path='product' element={<Product/>}/>
+      <Route path='product/addproduct' element={<ProductAddForm/>}/>
+    </Route>
+    <Route path='/login' element={<LoginPage/>}/>
+  </Routes>
 
     </div>
   );
