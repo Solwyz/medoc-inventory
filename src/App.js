@@ -12,7 +12,7 @@ import ProductAddForm from './Inventory/Pages/Product/ProductAddForm/ProductAddF
 
 function App() {
   return (
-    <div className="App font-AnekLatin">
+    <div className="App font-AnekLatin ">
 
   <Routes>
     <Route path="/" element={<InventoryLayout/>}>
