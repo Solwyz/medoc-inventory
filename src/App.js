@@ -14,6 +14,7 @@ function App() {
   return (
     <div className="App font-AnekLatin">
 
+
   <Routes>
     <Route path="/" element={<InventoryLayout/>}>
       <Route index element={<DashBoard/>}/>
@@ -27,6 +28,7 @@ function App() {
     </Route>
     <Route path='/login' element={<LoginPage/>}/>
   </Routes>
+
 
     </div>
   );

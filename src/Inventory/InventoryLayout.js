@@ -8,11 +8,11 @@ import { Outlet } from 'react-router-dom'
 function InventoryLayout() {
   return (
     <div>
-    <Header/>
-  <div className='flex'>
-      <Sidebar/>
-      <Outlet/>
-  </div>
+      <Header />
+      <div className='flex'>
+        <Sidebar />
+        <Outlet />
+      </div>
     </div>
   )
 }
