@@ -78,10 +78,10 @@ function Orders() {
                 <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
                 <input type="text" placeholder="Search" className="outline-none w-full" />
               </div>
-              <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
+              {/* <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
                 <img className="mr-2" src={FilterIcon} alt="" />
                 <input type="text" placeholder="Filter" className="outline-none w-full" />
-              </div>
+              </div> */}
             </div>
             <div className="border rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4">
               <img className="mr-2" src={Export} alt="" />
@@ -128,7 +128,6 @@ function Orders() {
                     <th className="p-4 font-medium text-center text-sm">Payment Mode</th>
                     <th className="p-4 font-medium text-center text-sm">Invoice ID</th>
                     <th className="p-4 font-medium text-center text-sm">Status</th>
-                    <th className="p-4 font-medium text-center text-sm">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -145,11 +144,6 @@ function Orders() {
                       <td className="p-4 font-medium text-center text-sm">{invoice}</td>
                       <td className="p-4 font-normal text-center text-[12px]">
                         <button className={`py-1 px-4 rounded-lg ${statusStyles[status]}`}>{status}</button>
-                      </td>
-                      <td className="p-4 font-medium text-center text-sm">
-                        <button onClick={() => handleDeleteClick(id)}>
-                          <img src={Delete} alt="delete" />
-                        </button>
                       </td>
                     </tr>
                   ))}
