@@ -130,8 +130,10 @@ function Orders() {
                     <th className="p-4 font-medium text-center text-sm">Amount</th>
                     {/* <th className="p-4 font-medium text-center text-sm">Action</th> */}
 
-                    <th className="p-4 font-medium text-center text-sm">Invoice ID</th>
-                    <th className="p-4 font-medium text-center text-sm">Status</th>
+
+                    {/* <th className="p-4 font-medium text-center text-sm">Invoice ID</th>
+                    <th className="p-4 font-medium text-center text-sm">Status</th> */}
+
 
                   </tr>
                 </thead>
@@ -155,7 +157,8 @@ function Orders() {
                         </button>
                       </td> */}
 
-                      </td>
+
+
 
                     </tr>
                   ))}
