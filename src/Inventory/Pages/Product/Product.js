@@ -111,7 +111,7 @@ function Product() {
                 <div className="bg-white p-6 mt-8 rounded-lg h-full min-h-svh">
                     <div className="flex justify-between">
                         <div className="flex">
-                            <div className="border rounded-lg items-center w-[584px] py-[12px] pl-4 text-[#696A70] flex">
+                            <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg items-center w-[584px] py-[12px] pl-4 text-[#696A70] flex">
                                 <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
                                 <input type="text" placeholder="Search" className="outline-none w-full" />
                             </div>
@@ -120,7 +120,7 @@ function Product() {
                                 <input type="text" placeholder="Filter" className="outline-none w-full" />
                             </div> */}
                         </div>
-                        <div className="border rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
+                        <div className="border hover:border-[#8F8F8F] rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
                             <img className="mr-2" src={Export} alt="" />
                             Export
                         </div>
@@ -180,29 +180,49 @@ function Product() {
                                             <td className="p-4 font-normal text-start text-[12px]">
                                                 <button className={`py-1 px-4 rounded-lg ${statusStyles[status]}`}>{status}</button>
                                             </td>
-                                            <td className="p-4 font-medium text-center justify-between items-start flex text-sm">
-
+                                            <td className="p-4 font-medium text-center justify-between items-start flex text-sm relative">
                                                 <button
                                                     onClick={() => handleViewModal({ ProductId, Price, ProductDetailems, Brand, ProductDescription, Quantity, status })}
-                                                    onMouseEnter={() => setHoverAction(`edit- ${ProductId}`)}
+                                                    onMouseEnter={() => setHoverAction(`edit-${ProductId}`)}
                                                     onMouseLeave={() => setHoverAction(null)}
+                                                    className="relative"
                                                 >
-                                                    <img src={hoverAction === `edit- ${ProductId}` ? eyeIconBlue : eyeIconBlack} alt="" />
+                                                    <img src={hoverAction === `edit-${ProductId}` ? eyeIconBlue : eyeIconBlack} alt="View" />
+                                                    {hoverAction === `edit-${ProductId}` && (
+                                                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
+                                                            View
+                                                        </span>
+                                                    )}
                                                 </button>
+
                                                 <button
                                                     onClick={() => handleDeleteClick(ProductId)}
-                                                    onMouseEnter={() => setHoverAction(`delete- ${ProductId}`)}
+                                                    onMouseEnter={() => setHoverAction(`delete-${ProductId}`)}
                                                     onMouseLeave={() => setHoverAction(null)}
+                                                    className="relative"
                                                 >
-                                                    <img src={hoverAction === `delete- ${ProductId}` ? Delete : deleteBlack} alt="delete" />
+                                                    <img src={hoverAction === `delete-${ProductId}` ? Delete : deleteBlack} alt="Delete" />
+                                                    {hoverAction === `delete-${ProductId}` && (
+                                                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
+                                                            Delete
+                                                        </span>
+                                                    )}
                                                 </button>
+
                                                 <button
-                                                    onMouseEnter={() => setHoverAction(`view- ${ProductId}`)}
+                                                    onMouseEnter={() => setHoverAction(`view-${ProductId}`)}
                                                     onMouseLeave={() => setHoverAction(null)}
+                                                    className="relative"
                                                 >
-                                                    <img src={hoverAction === `view- ${ProductId}` ? editBlue : editBlack} alt="" />
+                                                    <img src={hoverAction === `view-${ProductId}` ? editBlue : editBlack} alt="Edit" />
+                                                    {hoverAction === `view-${ProductId}` && (
+                                                        <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
+                                                            Edit
+                                                        </span>
+                                                    )}
                                                 </button>
                                             </td>
+
                                         </tr>
                                     ))}
                                 </tbody>

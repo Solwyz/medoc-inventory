@@ -119,7 +119,7 @@ function Dashboard() {
         <div className="flex">
           {/* Overview Cards */}
 
-          <div>
+          <div className="w-full">
             <div className="flex gap-6 mt-5  ">
               {["Total Earnings", "Total Shipment", "Total Orders"].map(
                 (label, index) => (
