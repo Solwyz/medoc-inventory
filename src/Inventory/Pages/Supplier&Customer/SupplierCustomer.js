@@ -84,7 +84,7 @@ function Orders() {
                         <div className="text-[14px] font-normal">Create new</div>
                     </div>
                 </div>
-                <div className="bg-white p-6 mt-8 rounded-t-lg h-full">
+                <div className="bg-white pt-6 px-6 mt-8 rounded-t-lg h-full">
                     <div className="flex items-center justify-between">
                         <div>
                             <div className="bg-[#F0F0F0] px-1 py-1 w-fit rounded-lg">
@@ -110,7 +110,7 @@ function Orders() {
                     </div>
                 </div>
 
-                <div className="bg-white p-6 w rounded-b-lg h-full min-h-svh  overflow-x-auto w-min-[1854px] w-full">
+                <div className="bg-white pb-6 px-6 w rounded-b-lg h-full min-h-svh  overflow-x-auto w-min-[1854px] w-full">
 
 
 

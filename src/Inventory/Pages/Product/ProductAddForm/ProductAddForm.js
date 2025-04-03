@@ -7,9 +7,9 @@ import { Link } from 'react-router-dom'
 
 function ProductAddForm() {
     return (
-        <div className='bg-[#f7f7f7] w-full min-w-max min-h-svh h-full'>
+        <div className='bg-[#F9F9FB] w-full min-w-max min-h-svh h-full'>
             <div className="h-[72px]"></div>
-            <div className="ml-[242px] bg-[#f7f7f7] px-6 py-8">
+            <div className="ml-[242px] bg-[#F9F9FB] px-6 py-8">
                 <div className="flex items-center justify-between">
                    <Link to="/product">
                         <div className="flex items-center">
@@ -18,7 +18,7 @@ function ProductAddForm() {
                         </div>
                    </Link>
                     <div className="flex">
-                        <div className=" border border-[#D5D5D5] rounded-lg justify-center items-center py-[13px] px-4 text-[#696A70] flex ">
+                        <div className=" border border-[#D5D5D5] bg-white rounded-lg justify-center items-center py-[12px] px-4 text-[#696A70] flex ">
                             <img className="mr-2 w-4 h-4" src={Cancel} alt="" />
                             Cancel
                         </div>
