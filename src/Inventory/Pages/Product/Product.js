@@ -88,23 +88,23 @@ function Product() {
     }
 
     return (
-        <div className="bg-[#f7f7f7] w-full min-w-max min-h-svh h-full">
+        <div className="bg-[#F9F9FB] w-full min-w-max min-h-svh h-full">
             <div className="h-[72px]"></div>
-            <div className="ml-[242px] bg-[#f7f7f7] px-6 py-8">
+            <div className="ml-[242px] bg-[#F9F9FB] px-6 py-8">
                 <div className="flex items-center justify-between">
                     <div className=""> <div className="text-[20px] leading-[24px] font-medium">Product Management</div></div>
                     <div className="flex">
+                        <div className=" border border-[#D5D5D5] rounded-lg justify-center cursor-pointer items-center py-[10px] px-3 text-[#696A70] flex ">
+                            <img className="mr-2 w-4 h-4" src={imprt} alt="" />
+                            Import
+                        </div>
                         <Link to={"addproduct"}>
                             <div
-                                className="border rounded-lg  py-[13px] px-[16px] cursor-pointer justify-center items-center text-[14px] font-normal text-white hover:bg-[#415BAD] bg-[#304BA0] flex ">
+                                className="border rounded-lg ml-4  py-[13px] px-[16px] cursor-pointer justify-center items-center text-[14px] font-normal text-white hover:bg-[#415BAD] bg-[#304BA0] flex ">
                                 <img className="mr-2" src={AddButn} alt="" />
                                 Add Product
                             </div>
                         </Link>
-                        <div className=" border border-[#D5D5D5] rounded-lg justify-center cursor-pointer items-center py-[13px] px-4 text-[#696A70] flex ml-4">
-                            <img className="mr-2 w-4 h-4" src={imprt} alt="" />
-                            Import
-                        </div>
 
                     </div>
                 </div>
@@ -115,7 +115,11 @@ function Product() {
                                 <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
                                 <input type="text" placeholder="Search" className="outline-none w-full" />
                             </div>
+
+                            <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
+
                             {/* <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
+
                                 <img className="mr-2" src={FilterIcon} alt="" />
                                 <input type="text" placeholder="Filter" className="outline-none w-full" />
                             </div> */}
@@ -287,6 +291,7 @@ function Product() {
                 </div>
             )}
 
+        </div>
         </div>
 
     );
