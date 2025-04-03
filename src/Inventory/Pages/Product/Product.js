@@ -109,25 +109,32 @@ function Product() {
                     </div>
                 </div>
                 <div className="bg-white p-6 mt-8 rounded-lg h-full min-h-svh">
-                    <div className="flex justify-between">
-                        <div className="flex">
-                            <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg items-center w-[584px] py-[12px] pl-4 text-[#696A70] flex">
-                                <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
-                                <input type="text" placeholder="Search" className="outline-none w-full" />
-                            </div>
-
-                            <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
-
-                                {/* <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
-
+                <div>
+                    <div className="">
+                        <div className="flex justify-between items-center">
+                           <div className=" flex">
+                                <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg items-center w-[584px] py-[12px] pl-4 text-[#696A70] flex">
+                                    <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
+                                    <input type="text" placeholder="Search" className="outline-none w-full" />
+                                </div>
+    
+                                <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
+    
+                                    {/* <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
+    
+                                    <img className="mr-2" src={FilterIcon} alt="" />
+                                    <input type="text" placeholder="Filter" className="outline-none w-full" />
+                                </div> */}
                                 <img className="mr-2" src={FilterIcon} alt="" />
-                                <input type="text" placeholder="Filter" className="outline-none w-full" />
-                            </div> */}
-                            </div>
-                            <div className="border hover:border-[#8F8F8F] rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
-                                <img className="mr-2" src={Export} alt="" />
-                                Export
-                            </div>
+                                    <input type="text" placeholder="Filter" className="outline-none w-full placeholder:text-black" />
+                                </div>
+                           </div>
+                           <div >
+                                <div className="border hover:border-[#8F8F8F] rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
+                                    <img className="mr-2" src={Export} alt="" />
+                                    Export
+                                </div>
+                           </div>
                         </div>
 
                         {/* <div className="bg-[#F0F0F0] px-1 py-1 w-fit mt-8 rounded-lg ">
@@ -233,7 +240,9 @@ function Product() {
                                 </table>
                             </div>
                         )}
+                        </div>
                     </div>
+
                 </div>
 
                 {/* Confirmation Modal */}
