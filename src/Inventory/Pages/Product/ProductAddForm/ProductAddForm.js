@@ -57,6 +57,27 @@ function ProductAddForm() {
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div>
+                                <label className="block text-sm font-medium">Quantity</label>
+                                <input
+                                    type="number"
+                                    className="w-full mt-1 p-2 border rounded-lg"
+                                    placeholder="0"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium">Status</label>
+                                <select
+                                    type="text"
+                                    className="w-full mt-1 p-2 border rounded-lg"
+                                    placeholder="AED 100.00"
+                                >
+                                    <option value="In Stock">In Stock</option>
+                                    <option value="Out of Stock">Out of Stock</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
                                 <label className="block text-sm font-medium">List Price</label>
                                 <input
                                     type="text"

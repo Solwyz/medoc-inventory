@@ -57,7 +57,11 @@ function Orders() {
 
     const tabs = ["Supplier", "Customer"];
 
-    const handleCreateClick = () => {
+    const handleCreateSupplierClick = () => {
+        setIsModalOpen(true)
+    }
+
+    const handleCreateCustomerClick = () => {
         setIsModal2Open(true);
     }
 
@@ -75,7 +79,7 @@ function Orders() {
             <div className="ml-[242px] bg-[#f7f7f7] px-6 py-8">
                 <div className="flex items-center justify-between">
                     <div className="text-[20px] leading-[24px] font-medium">Supplier and Customer</div>
-                    <div className="flex bg-[#415BAD] w-[123px] h-[40px] rounded-lg items-center justify-center gap-2 text-white hover:cursor-pointer hover:bg-[#304BA0]" onClick={handleCreateClick}>
+                    <div className="flex bg-[#415BAD] w-[123px] h-[40px] rounded-lg items-center justify-center gap-2 text-white hover:cursor-pointer hover:bg-[#304BA0]" onClick={activeTab === 'Supplier'? handleCreateSupplierClick : handleCreateCustomerClick}>
                         <div><img className="h-4 w-4" src={addIcon}></img></div>
                         <div className="text-[14px] font-normal">Create new</div>
                     </div>

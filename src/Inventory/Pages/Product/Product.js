@@ -115,10 +115,14 @@ function Product() {
                                 <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
                                 <input type="text" placeholder="Search" className="outline-none w-full" />
                             </div>
+
                             <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
+
+                            {/* <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
+
                                 <img className="mr-2" src={FilterIcon} alt="" />
                                 <input type="text" placeholder="Filter" className="outline-none w-full" />
-                            </div>
+                            </div> */}
                         </div>
                         <div className="border hover:border-[#8F8F8F]  rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
                             <img className="mr-2" src={Export} alt="" />
