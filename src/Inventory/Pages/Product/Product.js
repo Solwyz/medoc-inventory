@@ -124,9 +124,8 @@ function Product() {
                                 <input type="text" placeholder="Filter" className="outline-none w-full" />
                             </div> */}
                         </div>
-
                         <div className="border hover:border-[#8F8F8F] rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
-               <img className="mr-2" src={Export} alt="" />
+                            <img className="mr-2" src={Export} alt="" />
                             Export
                         </div>
                     </div>
@@ -292,6 +291,7 @@ function Product() {
                 </div>
             )}
 
+        </div>
         </div>
 
     );
