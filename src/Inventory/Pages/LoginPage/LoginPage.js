@@ -24,7 +24,7 @@ function LoginPage() {
 
   return (
     <div className="flex grid-cols-2 ">
-      <div className="bg-[#596FB3] h-full w-1/2">
+      <div className="bg-[#596FB3] h-full md:h-svh w-1/2">
         <div className="pt-[106px] pl-[138px]">
           <img src={logo} alt="" className="" />
           <h2 className="text-[32px] font-normal text-white leading-[38px] mt-10">

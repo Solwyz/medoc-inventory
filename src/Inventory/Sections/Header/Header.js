@@ -3,6 +3,7 @@ import medoLogo from "../../Assets/HeaderSection/medocLogo.svg";
 import Notification from "../../Assets/HeaderSection/Notification.svg";
 import Announce from "../../Assets/HeaderSection/Announce.svg";
 import User from "../../Assets/HeaderSection/User.svg";
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
@@ -11,9 +12,11 @@ function Header() {
       <div className="flex justify-end ml-auto">
         <img className="cursor-pointer" src={Notification} alt="Notification" />
         <img className="ml-4 cursor-pointer" src={Announce} alt="Announcement" />
-        <div className="relative">
-          <img className="ml-16 cursor-pointer" src={User} alt="User" />
-        </div>
+       <Link to="/login">
+          <div className="relative">
+            <img className="ml-16 cursor-pointer" src={User} alt="User" />
+          </div>
+       </Link>
       </div>
     </div>
   );
