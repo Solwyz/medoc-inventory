@@ -146,7 +146,7 @@ function Dashboard() {
                 </div>
               </div>
               <div className="bg-white p-4 w-[365px] h-[265px]  rounded-lg shadow">
-                <h3 className="font-normal text-[18px] ">Product Selling</h3>
+                <h3 className="font-normal text-[18px] ">Product Selling </h3>
                 <div style={{ height: "172px", width: "" }} className="mt-6">
                   <Doughnut data={doughnutData} options={options} />
                 </div>
