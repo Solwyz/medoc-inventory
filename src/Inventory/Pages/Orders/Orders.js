@@ -155,7 +155,7 @@ function Orders() {
                     <th className="px-4 font-medium text-[#2F3139]  py-2">
                       Expected Delivery
                     </th>
-                    <th className="px-4 font-medium text-[#2F3139]  py-2">
+                    <th className="px-4 font-medium rounded-tr-lg text-[#2F3139]  py-2">
                       Amount
                     </th>
                   </tr>
