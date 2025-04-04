@@ -59,6 +59,18 @@ function LoginPage() {
             </div>
           </div>
           <div className="relative mt-6">
+            <label className="text-[#050710] text-[14px] font-normal">Name</label>
+            <div className="relative">
+              <input
+                type="text"
+                className={`w-full mt-3 h-[48px] rounded-lg placeholder:text-[#696A70] focus:outline-none  text-[#696A70] text-base font-normal border py-5 px-4 ${error ? "border-red-500" : "border-[#E6E6E7]"}`}
+                placeholder="Enter your name"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+             </div>
+          </div>
+          <div className="relative mt-6">
             <label className="text-[#050710] text-[14px] font-normal">Password</label>
             <div className="relative">
               <input
