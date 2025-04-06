@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import quantityIcon from "../../Assets/dashboard/Quantity.svg";
 import overviewIcon from "../../Assets/dashboard/overview.svg";
 import receivedIcon from "../../Assets/dashboard/On the way.svg";
@@ -6,9 +6,17 @@ import numberIcon from "../../Assets/dashboard/no of.svg";
 import catIcon from "../../Assets/dashboard/cat.svg";
 import { Bar, Doughnut } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import Api from "../../Services/Api";
 Chart.register(...registerables);
 
 function Dashboard() {
+  const [summary, setSummary] = useState({});
+  const [stockData, setStockData] = useState([]);
+  const [orderSummary, setOrderSummary] = useState({});
+  const [earnings, setEarnings] = useState([]);
+  const years = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
+  
+
   const [alerts, setAlerts] = useState([
     { name: "Tata Salt", remainingQuantity: 5, unit: "Packet" },
     { name: "Sugar", remainingQuantity: 5, unit: "Kg" },
@@ -16,20 +24,20 @@ function Dashboard() {
     { name: "Rice", remainingQuantity: 5, unit: "Kg" },
   ]);
 
-  const stockData = [
-    { item: "Dermo skin care", soldQuantity: 40, remainingQuantity: 250, price: "AED 14" },
-    { item: "Hydrating Face Cream", soldQuantity: 30, remainingQuantity: 150, price: "AED 20" },
-    { item: "Vitamin C Serum", soldQuantity: 25, remainingQuantity: 100, price: "AED 35" },
-    { item: "Aloe Vera Gel", soldQuantity: 50, remainingQuantity: 200, price: "AED 18" },
-    { item: "Sunscreen SPF 50", soldQuantity: 45, remainingQuantity: 180, price: "AED 25" }
-  ];
+  // const stockData = [
+  //   { item: "Dermo skin care", soldQuantity: 40, remainingQuantity: 250, price: "AED 14" },
+  //   { item: "Hydrating Face Cream", soldQuantity: 30, remainingQuantity: 150, price: "AED 20" },
+  //   { item: "Vitamin C Serum", soldQuantity: 25, remainingQuantity: 100, price: "AED 35" },
+  //   { item: "Aloe Vera Gel", soldQuantity: 50, remainingQuantity: 200, price: "AED 18" },
+  //   { item: "Sunscreen SPF 50", soldQuantity: 45, remainingQuantity: 180, price: "AED 25" }
+  // ];
 
   const barData = {
-    labels: ["2019", "2020", "2021", "2022", "2023", "2024", "2025"],
+    labels: years,
     datasets: [
       {
         label: false,
-        data: [2.5, 3, 2.2, 2.8, 2.1, 3.2, 2.7],
+        data: earnings,
         backgroundColor: "#4A3AFF",
         borderRadius: 8,
         barThickness: 16,
@@ -71,10 +79,10 @@ function Dashboard() {
   };
 
   const doughnutData = {
-    labels: ["Dermocosmetics", "Skincare", "Haircare"],
+    labels: ["Total Earnings", "Total Shipments", "Total Orders"],
     datasets: [
       {
-        data: [40, 35, 25],
+        data: [summary.totalEarnings, summary.totalShipments, summary.totalOrders],
         backgroundColor: ["#6283C0", "#8855B2", "#BDABF5"],
         hoverOffset: 4,
       },
@@ -107,6 +115,117 @@ function Dashboard() {
     },
   };
 
+
+  useEffect(() => {
+    Api.get('api/dashBoard/summary')
+    .then(response => {
+      if(response.status === 200) {
+        console.log('summary',response.data);
+        setSummary(response.data)
+      } else {
+        console.error('Error fetching summary:', response);
+      }
+    })
+
+    Api.get('api/dashBoard/orders/top-products')
+    .then(response => {
+      if(response.status === 200) {
+        console.log('top products response',response.data);
+        setStockData(response.data)
+      } else {
+        console.error('Error fetching top products:', response);
+      }
+    })
+
+    Api.get('api/dashBoard/orders/delivered-count')
+    .then(response => {
+      if(response.status === 200) {
+        console.log('delivered count response',response.data);
+        setOrderSummary(response.data)
+      } else {
+        console.error('Error fetching delivered count:', response);
+      }
+    })
+
+    Api.get('api/dashBoard/earnings/yearly')
+    .then(response => {
+      if(response.status === 200) {
+        console.log('yearly earnings response',response);
+      } else {
+        console.error('Error fetching yearly earnings:', response);
+      }
+
+    })
+
+   
+
+  },[])
+
+  // useEffect(() => {
+  //   years.forEach(year => (
+  //     Api.get(`api/dashBoard/earnings/yearly?year=${year}`)
+  //     .then(response => {
+  //       if(response.status === 200) {
+  //         console.log('yearly earnings response',response.data);
+  //         setEarnings(prev => {
+  //           const updated = [...prev];
+  //           if (updated.length < years.length) {
+  //           updated.push({ [year]: response.data });
+  //           }
+  //           console.log('updated',updated);
+  //           return updated;
+  //         });
+  //         console.log('earnings',earnings);
+  //       } else {
+  //         console.error('Error fetching yearly earnings:', response);
+  //       }
+  //     })
+  //   ))
+  // },[])
+
+  useEffect(() => {
+    const tempEarnings = [];
+    let completedRequests = 0;
+  
+    years.forEach(year => {
+      Api.get(`api/dashBoard/earnings/yearly?year=${year}`)
+        .then(response => {
+          if (response.status === 200) {
+            tempEarnings.push({ year: parseInt(year), value: response.data });
+          } else {
+            console.error(`Error fetching for year ${year}`, response);
+          }
+        })
+        .catch(error => {
+          console.error(`Failed for year ${year}`, error);
+        })
+        .finally(() => {
+          completedRequests++;
+  
+          if (completedRequests === years.length) {
+            // Sort earnings by year (low to high)
+            const sorted = tempEarnings.sort((a, b) => a.year - b.year);
+  
+            // Final structured array like [{ "2019": 0 }, { "2020": 100 }, ...]
+            const finalArray = sorted.map(item => ({ [item.year]: item.value }));
+  
+            // Values-only array like [0, 100, 200, ...]
+            const valuesOnlyArray = sorted.map(item => item.value);
+  
+            // Set to state
+            setEarnings(valuesOnlyArray);
+  
+            // Optional: log both
+            console.log('Sorted earnings:', finalArray);
+            console.log('Values only:', valuesOnlyArray);
+            console.log('Earnings:', earnings);
+          }
+        });
+    });
+  }, []);
+  
+  
+
   return (
     <div className="bg-[#f7f7f7] w-full min-w-max min-h-svh h-full">
       <div className="h-[72px]"></div>
@@ -121,20 +240,37 @@ function Dashboard() {
 
           <div className="w-full">
             <div className="flex gap-6 mt-5  ">
-              {["Total Earnings", "Total Shipment", "Total Orders"].map(
-                (label, index) => (
-                  <div
-                    key={index}
-                    className="bg-white p-4  w-[251px] h-[152px] rounded-lg shadow"
-                  >
-                    <img src={overviewIcon} className="w-10 h-10" alt="" />
-                    <p className="font-light text-base mt-6">{label}</p>
-                    <p className="font-medium text-[#304BA0] text-[24px] leading-5 mt-2">
-                      AED 104,56
-                    </p>
-                  </div>
-                )
-              )}
+
+              <div
+                className="bg-white p-4  w-[251px] h-[152px] rounded-lg shadow"
+              >
+                <img src={overviewIcon} className="w-10 h-10" alt="" />
+                <p className="font-light text-base mt-6">Total Earnings</p>
+                <p className="font-medium text-[#304BA0] text-[24px] leading-5 mt-2">
+                  AED {summary.totalEarnings}
+                </p>
+              </div>
+
+              <div
+                className="bg-white p-4  w-[251px] h-[152px] rounded-lg shadow"
+              >
+                <img src={overviewIcon} className="w-10 h-10" alt="" />
+                <p className="font-light text-base mt-6">Total Shipments</p>
+                <p className="font-medium text-[#304BA0] text-[24px] leading-5 mt-2">
+                  AED {summary.totalShipments}
+                </p>
+              </div>
+
+              <div
+                className="bg-white p-4  w-[251px] h-[152px] rounded-lg shadow"
+              >
+                <img src={overviewIcon} className="w-10 h-10" alt="" />
+                <p className="font-light text-base mt-6">Total Orders</p>
+                <p className="font-medium text-[#304BA0] text-[24px] leading-5 mt-2">
+                  AED {summary.totalOrders}
+                </p>
+              </div>
+
             </div>
 
             {/* Charts Section */}
@@ -168,10 +304,10 @@ function Dashboard() {
                   <tbody  >
                     {stockData.map((stock, index) => (
                       <tr key={index} className="border-b    ">
-                        <td className="py-4 text-[#282828] text-base font-normal">{stock.item}</td>
+                        <td className="py-4 text-[#282828] text-base font-normal">{stock.product?.name}</td>
                         <td className="py-4 text-[#282828] text-base font-normal">{stock.soldQuantity}</td>
-                        <td className="py-4 text-[#282828] text-base font-normal">{stock.remainingQuantity}</td>
-                        <td className="py-4 text-[#282828] text-base font-normal">{stock.price}</td>
+                        <td className="py-4 text-[#282828] text-base font-normal">{stock.product?.stockQuantity}</td>
+                        <td className="py-4 text-[#282828] text-base font-normal">AED {stock.product?.price}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -200,11 +336,10 @@ function Dashboard() {
                       </p>
                     </h1>
                     <div
-                      className={`${
-                        alert.remainingQuantity < 10
+                      className={`${alert.remainingQuantity < 10
                           ? "text-[#AA3028] bg-[#FEECEB]"
                           : "text-[#2E7D32] bg-[#E8F5E9]"
-                      } rounded-[16px] w-[50px] h-[22px] text-center text-xs font-medium flex items-center justify-center`}
+                        } rounded-[16px] w-[50px] h-[22px] text-center text-xs font-medium flex items-center justify-center`}
                     >
                       {alert.remainingQuantity < 10 ? "Low" : "OK"}
                     </div>
@@ -217,8 +352,8 @@ function Dashboard() {
               )}
             </div>
 
-            <div className="bg-white p-4 rounded-lg w-[330px] h-[183px] l shadow">
-              <h3 className="font-medium text-[18px]  ">Inventory Summary</h3>
+            <div className="bg-white p-4 rounded-lg w-[330px] h-auto l shadow">
+              <h3 className="font-medium text-[18px]  ">Order Summary</h3>
               <div className="flex justify-between mt-8 px-3 ">
                 <div className="items-center justify-center text-center">
                   <img
@@ -226,27 +361,52 @@ function Dashboard() {
                     alt=""
                     className="w-[30px] h-[30px] mx-auto"
                   />
-                  <h1 className="text-[#5C5B5B] font-semibold mt-2 ">868</h1>
+                  <h1 className="text-[#5C5B5B] font-semibold mt-2 ">{orderSummary.last1Year}</h1>
                   <h2 className="text-[#444444] text-sm font-medium mt-1">
-                    Quantity in Hand
+                    Last 1 year Orders
                   </h2>
                 </div>
                 <div className="border border-[#E1E2E5]"></div>
                 <div className="items-center justify-center text-center">
                   <img
-                    src={receivedIcon}
+                    src={quantityIcon}
                     alt=""
                     className="w-[30px] h-[30px] mx-auto"
                   />
-                  <h1 className="text-[#5C5B5B] font-semibold mt-2 ">200</h1>
+                  <h1 className="text-[#5C5B5B] font-semibold mt-2 ">{orderSummary.last6Months}</h1>
                   <h2 className="text-[#444444] text-sm font-medium mt-1">
-                    To be received
+                    Last 6 month orders
+                  </h2>
+                </div>
+              </div>
+              <div className="flex justify-between mt-8 px-3 ">
+                <div className="items-center justify-center text-center">
+                  <img
+                    src={quantityIcon}
+                    alt=""
+                    className="w-[30px] h-[30px] mx-auto"
+                  />
+                  <h1 className="text-[#5C5B5B] font-semibold mt-2 ">{orderSummary.last3Months}</h1>
+                  <h2 className="text-[#444444] text-sm font-medium mt-1">
+                    Last 3 month Orders
+                  </h2>
+                </div>
+                <div className="border border-[#E1E2E5]"></div>
+                <div className="items-center justify-center text-center">
+                  <img
+                    src={quantityIcon}
+                    alt=""
+                    className="w-[30px] h-[30px] mx-auto"
+                  />
+                  <h1 className="text-[#5C5B5B] font-semibold mt-2 ">{orderSummary.last1Month}</h1>
+                  <h2 className="text-[#444444] text-sm font-medium mt-1">
+                    Last 1 month orders
                   </h2>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white p-4 rounded-lg w-[330px] h-[183px]  shadow">
+            {/* <div className="bg-white p-4 rounded-lg w-[330px] h-[183px]  shadow">
               <h3 className="font-medium text-[18px]  ">Product Summary</h3>
               <div className="flex justify-between mt-8 ">
                 <div className="items-center justify-center text-center">
@@ -273,7 +433,9 @@ function Dashboard() {
                   </h2>
                 </div>
               </div>
-            </div>
+            </div> */}
+
+
           </div>
         </div>
       </div>
