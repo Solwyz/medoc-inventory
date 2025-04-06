@@ -1,107 +1,119 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SearchIcon from "../../Assets/common/Search Icon.svg";
 import FilterIcon from "../../Assets/common/filter_alt.svg";
 import Export from "../../Assets/orderSection/Export.svg";
-import checkBox from "../../Assets/orderSection/Vector (1).svg";
-import checkedBox from "../../Assets/orderSection/Rectangle 908.svg";
-import Delete from "../../Assets/orderSection/delete (1).svg";
 import OrderListIsEmpty from "../../Assets/orderSection/illo.svg";
-import DeleteIcon from "../../Assets/orderSection/Featured icon.svg";
-
+import Api from "../../Services/Api";
 function Orders() {
-  const [checkedItems, setCheckedItems] = useState({});
-  const [selectAllChecked, setSelectAllChecked] = useState(false);
+  const [orders, setOrders] = useState([]);
   const [activeTab, setActiveTab] = useState("New orders");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [orderToDelete, setOrderToDelete] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [orderStatus, setOrderStatus] = useState("");
 
-
-
-
-
-  const toggleCheckbox = (id) => {
-    setCheckedItems((prev) => {
-      const newCheckedItems = { ...prev, [id]: !prev[id] };
-      setSelectAllChecked(Object.values(newCheckedItems).every(Boolean)); // If all checked, set selectAllChecked to true
-      return newCheckedItems;
-    });
-  };
-
-  const toggleSelectAll = () => {
-    const newCheckedState = !selectAllChecked;
-    setSelectAllChecked(newCheckedState);
-
-    const updatedCheckedItems = {};
-    orders.forEach(({ id }) => {
-      updatedCheckedItems[id] = newCheckedState;
-    });
-
-    setCheckedItems(updatedCheckedItems);
-  };
-
-
-  const orders = [
-    { id: 1, orderId: "652542", date: "17 Jan, 2025", products: "Face cream-120ml", items:"30", amount: "AED 240", payment: "COD",  expectedDelivey: "17 Jan, 2025", status: "Complete" },
-    { id: 2, orderId: "652543", date: "18 Jan, 2025", products: "Face cream-120ml", items:"30", amount: "AED 360", payment: "Paid",  expectedDelivey: "17 Jan, 2025", status: "Ongoing" },
-    { id: 3, orderId: "652544", date: "19 Jan, 2025", products: "Face cream-120ml", items:"30", amount: "AED 120", payment: "COD",  expectedDelivey: "17 Jan, 2025", status: "Pending" },
+  const tabs = [
+    "New orders",
+    "Pending",
+    "Ongoing",
+    "Completed",
+    "Cancelled",
+    "Return",
   ];
 
-  const statusStyles = {
-    Complete: "text-[#29860A] bg-[#E1FDD7]",
-    Ongoing: "text-[#BD7416] bg-[#FFF3E4]",
-    Pending: "text-[#FF0000] bg-[#FFE7E7]",
+  useEffect(() => {
+    fetchOrders(activeTab);
+  }, [activeTab]);
+
+  const statusMap = {
+    "New orders": "NEW_ORDERS",
+    Pending: "PENDING",
+    Ongoing: "ONGOING",
+    Completed: "COMPLETED",
+    Cancelled: "CANCELLED",
+    Return: "RETURN",
   };
 
-  const tabs = ["New orders", "Pending", "Ongoing", "Completed", "Cancelled", "Return"];
+  const fetchOrders = async (status) => {
+    try {
+      const apiStatus = statusMap[status] || "NEW_ORDERS";
+      const url =
+        apiStatus === "NEW_ORDERS"
+          ? "api/order"
+          : `api/order/status/${apiStatus}`;
+      const response = await Api.get(url);
+      console.log("API Response:", response.data); // Debugging
+      setOrders(Array.isArray(response.data.data) ? response.data.data : []);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      setOrders([]);
+    }
+  };
 
-  const handleDeleteClick = (id) => {
-    setOrderToDelete(id);
+  const openModal = (order) => {
+    setSelectedOrder(order);
+    setOrderStatus(order.status);
     setIsModalOpen(true);
   };
 
-  const confirmDelete = () => {
-    // Implement deletion logic here
-    console.log(`Order with ID ${orderToDelete} deleted.`);
+  const closeModal = () => {
     setIsModalOpen(false);
-    setOrderToDelete(null);
+    setSelectedOrder(null);
+  };
+
+  const updateOrderStatus = async () => {
+    try {
+      await Api.post(`/api/order/${selectedOrder.id}`, { status: orderStatus });
+      setOrders((prevOrders) =>
+        prevOrders.map((order) =>
+          order.id === selectedOrder.id
+            ? { ...order, status: orderStatus }
+            : order
+        )
+      );
+      closeModal();
+    } catch (error) {
+      console.error("Error updating order status:", error);
+    }
   };
 
   return (
     <div className="bg-[#f7f7f7] w-full min-w-max min-h-svh h-full">
       <div className="h-[72px]"></div>
       <div className="ml-[242px] bg-[#f7f7f7] px-6 py-8">
-        <div className="text-[20px] leading-[24px] font-medium">Order Management</div>
-        <div className="bg-white p-6 mt-8 rounded-lg h-full min-h-svh">
+        <div className="text-[20px] leading-[24px] font-medium">
+          Order Management
+        </div>
+        <div className="bg-white p-6 mt-8 rounded-lg  min-h-svh">
           <div className="flex justify-between">
             <div className="flex">
-              <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg items-center w-[584px] py-[12px] pl-4 text-[#2C2B2B] flex">
-                <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
-                <input type="text" placeholder="Search" className="outline-none w-full" />
+              <div className="relative w-[584px]">
+                <input
+                  type="text"
+                  placeholder="Search Product, Product ID"
+                  className="border border-[#D5D5D5] focus:outline-[#75689C] text-[#696A70] text-sm font-normal rounded-lg p-2 pl-10 w-full h-[48px]"
+                />
+                <img
+                  src={SearchIcon}
+                  alt="Search"
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
+                />
               </div>
-
-              <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg w-[96px] py-[14px] pl-4 text-[#2C2B2B] flex ml-4 ">
-                <img className="mr-2" src={FilterIcon} alt="" />
-                <input type="text" placeholder="Filter" className="outline-none w-full placeholder:text-[#2C2B2B]" />
-              </div>
-
-              {/* <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
-                <img className="mr-2" src={FilterIcon} alt="" />
-                <input type="text" placeholder="Filter" className="outline-none w-full" />
-              </div> */}
-
+              <button className="border border-[#D5D5D5] hover:border-[#8F8F8F] flex items-center font-normal text-sm text-[#2C2B2B] p-2 ml-2 rounded-lg w-[87px] h-[48px]">
+                <img src={FilterIcon} className="mr-2" alt="Filter" /> Filter
+              </button>
             </div>
-            <div className="border hover:border-[#8F8F8F]  rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4">
-              <img className="mr-2" src={Export} alt="" />
-              Export
-            </div>
+            <button className="bg-white border border-[#D5D5D5] hover:border-[#8F8F8F] flex items-center font-normal text-sm px-4 py-3 rounded-lg">
+              <img src={Export} className="mr-2 w-4 h-4" alt="" /> Export
+            </button>
           </div>
-
           <div className="bg-[#F0F0F0] px-1 py-1 w-fit mt-8 rounded-lg ">
             <div className="flex">
               {tabs.map((tab) => (
                 <div
                   key={tab}
-                  className={`px-6 py-2 cursor-pointer rounded-lg ${activeTab === tab ? "bg-white" : ""}`}
+                  className={`px-6 py-2 cursor-pointer font-normal text-sm rounded-lg ${
+                    activeTab === tab ? "bg-white" : ""
+                  }`}
                   onClick={() => setActiveTab(tab)}
                 >
                   {tab}
@@ -109,53 +121,79 @@ function Orders() {
               ))}
             </div>
           </div>
-
           {orders.length === 0 ? (
             <div className="flex flex-col items-center justify-center mt-[214px]">
-              <img src={OrderListIsEmpty} alt="Empty Order List" className="w-[156px] h-[87px]" />
-              <h1 className="text-[14px] font-normal mt-1 text-[#696A70]">Your order list is empty</h1>
+              <img
+                src={OrderListIsEmpty}
+                alt="Empty Order List"
+                className="w-[156px] h-[87px]"
+              />
+              <h1 className="text-[14px] font-normal mt-1 text-[#696A70]">
+                Your order list is empty
+              </h1>
             </div>
           ) : (
             <div className="mt-4">
-              <table className="w-full bg-white mt-4 border">
-                <thead className="bg-[#F0F0F0] px-6 py-4">
-                  <tr>
-                    <th className="p-4 font-medium text-center text-sm flex items-center"> Order ID</th>
-                    <th className="p-4 font-medium text-center text-sm">Date</th>
-                    <th className="p-4 font-medium text-center text-sm">Product</th>
-                    <th className="p-4 font-medium text-center text-sm">Item</th>
-                    <th className="p-4 font-medium text-center text-sm">Payment Mode</th>
-
-                    <th className="p-4 font-medium text-center text-sm">Expected Delivery</th>
-                    <th className="p-4 font-medium text-center text-sm">Amount</th>
-                    {/* <th className="p-4 font-medium text-center text-sm">Action</th> */}
-
-                    {/* <th className="p-4 font-medium text-center text-sm">Invoice ID</th>
-                    <th className="p-4 font-medium text-center text-sm">Status</th> */}
-
+              <table className="w-full text-left text-[14px] border  font-normal border-collapse">
+                <thead className="bg-[#F0F0F0] h-10 border-b border-[#D6D6D6]">
+                  <tr className="text-sm font-medium text-[#2F3139]">
+                    <th className="px-4 font-medium text-[#2F3139]  py-2 rounded-tl-lg">
+                      Order ID
+                    </th>
+                    <th className="px-4 font-medium text-[#2F3139]  py-2">
+                      Date
+                    </th>
+                    <th className="px-4 font-medium text-[#2F3139]  py-2">
+                      Product
+                    </th>
+                    <th className="px-4 font-medium text-[#2F3139]  py-2">
+                      Item
+                    </th>
+                    <th className="px-4 font-medium text-[#2F3139]  py-2">
+                      Payment Mode
+                    </th>
+                    <th className="px-4 font-medium text-[#2F3139]  py-2">
+                      Expected Delivery
+                    </th>
+                    <th className="px-4 font-medium rounded-tr-lg text-[#2F3139]  py-2">
+                      Amount
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map(({ id, orderId, date, products, items,expectedDelivey, amount, payment, invoice, status }) => (
-                    <tr key={id}>
-                      <td className="p-4 font-medium text-center text-sm flex items-center">{orderId}</td>
-                      <td className="p-4 font-medium text-center text-sm">{date}</td>
-                      <td className="p-4 font-medium text-center text-sm">{products}</td>
-                      <td className="p-4 font-medium text-center text-sm">{items}</td>
-                      <td className="p-4 font-medium text-center text-sm">{payment}</td>
-                      <td className="p-4 font-medium text-center text-sm">{expectedDelivey}</td>
-                      <td className="p-4 font-medium text-center text-sm">{amount}</td>
-                      {/* <td className="p-4 font-normal text-center text-[12px]">
-                        <button className={`py-1 px-4 rounded-lg ${statusStyles[status]}`}>{status}</button>
-
-                      </td> */}
-                      {/* <td className="p-4 font-medium text-center text-sm">
-                        <button onClick={() => handleDeleteClick(id)}>
-                          <img src={Delete} alt="delete" />
-                        </button>
-                      </td> */}
-
-
+                  {orders.map((order) => (
+                    <tr
+                      key={order.id}
+                      onClick={() => openModal(order)}
+                      className="border-b h-[56px]  items-center hover:bg-[#F6F6F6] text-sm"
+                    >
+                      <td className="px-4 py-2">{order.orderId}</td>
+                      <td className="px-4 py-2">{order.orderDate}</td>
+                      <td className="px-4 py-2">
+                        {order.orderItems.length > 0
+                          ? order.orderItems
+                              .map((item) => item.product.name)
+                              .join(", ")
+                          : order.user.cart.length > 0
+                          ? order.user.cart
+                              .map((item) => item.product.name)
+                              .join(", ")
+                          : "No Items"}
+                      </td>
+                      <td className="px-4 py-2">
+                        {order.orderItems.length > 0
+                          ? order.orderItems
+                              .map((item) => `${item.quantity}`)
+                              .join(", ")
+                          : order.user.cart.length > 0
+                          ? order.user.cart
+                              .map((item) => `${item.quantity}`)
+                              .join(", ")
+                          : "No Items"}
+                      </td>
+                      <td className="px-4 py-2">{order.paymentMode}</td>
+                      <td className="px-4 py-2">{order.expectedDelivery}</td>
+                      <td className="px-4 py-2">{order.amount}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -165,16 +203,82 @@ function Orders() {
         </div>
       </div>
 
-      {/* Confirmation Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 ">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[361px] h-[256px]">
-            <img className="w-12 h-12" src={DeleteIcon} alt="" />
-            <h1 className="mt-6 font-medium text-[16px]">Confirm  Delete</h1>
-            <h2 className="text-[14px] font-normal text-[#818180] mt-2">Are you sure you want to delete this order?</h2>
-            <div className="flex  mt-4">
-              <button className="px-[52px] py-[14px] border-[1px] rounded-lg mr-2" onClick={() => setIsModalOpen(false)}>Cancel</button>
-              <button className="px-[52px] py-[14px] bg-[#FFCFCF] hover:bg-[#FFA0A0] text-[#D41515] rounded-lg" onClick={confirmDelete}>Delete</button>
+      {isModalOpen && selectedOrder && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white rounded-lg p-6 w-[400px] shadow-lg">
+            <div className="flex justify-between items-center border-b pb-2">
+              <h2 className="text-lg font-semibold">Order Details</h2>
+              <button
+                onClick={closeModal}
+                className="text-gray-500 hover:text-black"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="mt-4 space-y-3 text-sm">
+              <p>
+                <strong>Product Name:</strong>{" "}
+                {selectedOrder.user.wishlist[0]?.product?.name}
+              </p>
+              <p>
+                <strong>Order ID:</strong> {selectedOrder.orderId}
+              </p>
+              <p>
+                <strong>Date of Order:</strong> {selectedOrder.orderDate}
+              </p>
+              <p>
+                <p>
+                  <strong>Items:</strong>{" "}
+                  {selectedOrder?.orderItems?.length > 0
+                    ? selectedOrder.orderItems
+                        .map((item) => `${item.quantity}`)
+                        .join(", ")
+                    : selectedOrder?.user?.cart?.length > 0
+                    ? selectedOrder.user.cart
+                        .map((item) => `${item.quantity}`)
+                        .join(", ")
+                    : "No Items"}
+                </p>
+              </p>
+              <p>
+                <strong>Payment Mode:</strong> {selectedOrder.paymentMode}
+              </p>
+              <p>
+                <strong>Expected Delivery:</strong>{" "}
+                {selectedOrder.expectedDelivery}
+              </p>
+              <p>
+                <strong>Amount:</strong> AED {selectedOrder.amount}
+              </p>
+            </div>
+            <div className="mt-4">
+              <label className="block text-sm font-medium mb-1">
+                Order Status
+              </label>
+              <select
+                value={orderStatus}
+                onChange={(e) => setOrderStatus(e.target.value)}
+                className="w-full p-2 border rounded-lg text-sm"
+              >
+                <option value="Pending">Pending</option>
+                <option value="Ongoing">Ongoing</option>
+                <option value="Completed">Completed</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+            <div className="mt-6 flex justify-end space-x-2">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-gray-200 rounded-lg text-sm"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={updateOrderStatus}
+                className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm"
+              >
+                Save Update
+              </button>
             </div>
           </div>
         </div>

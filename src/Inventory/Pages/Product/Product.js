@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SearchIcon from "../../Assets/common/Search Icon.svg";
 import FilterIcon from "../../Assets/common/filter_alt.svg";
 import Export from "../../Assets/orderSection/Export.svg";
@@ -19,6 +19,7 @@ import Close from "../../Assets/Product Section/close.svg";
 import CloseRed from "../../Assets/Product Section/closeRed.svg";
 import ProductAddForm from "./ProductAddForm/ProductAddForm";
 import { Link } from "react-router-dom";
+import Api from "../../Services/Api";
 
 function Product() {
     const [checkedItems, setCheckedItems] = useState({});
@@ -30,6 +31,8 @@ function Product() {
     const [isViewModal, setIsViewModal] = useState(false);
     const [selectProduct, setSelectProduct] = useState(null)
     const [hoverClose, setHoverClose] = useState(null)
+    const [orders, setOrders] = useState([])
+    const [refreshKey, setRefreshKey] = useState(0);
 
 
 
@@ -56,11 +59,6 @@ function Product() {
     };
 
 
-    const orders = [
-        { ProductId: 1, Price: "AED 240", ProductDetailems: "Multivitamin Vitamin Healthkart Tablet", ProductDescription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", Brand: "Cipla", Quantity: "100ml", payment: "COD", invoice: "CT/12/2544", status: 'In Stock' },
-        { ProductId: 2, Price: "AED 360", ProductDetailems: "Multivitamin Vitamin Healthkart Tablet", ProductDescription: "Lorem Ipsum is simply dummy text of the printing and typesetting industry.", Brand: "Cipla", Quantity: "100ml", payment: "Online", invoice: "CT/12/2545", status: "Out of Stock" },
-
-    ];
 
     const statusStyles = {
         'In Stock': "text-[#29860A] bg-[#E1FDD7]",
@@ -70,20 +68,48 @@ function Product() {
     // const tabs = ["New orders", "Ongoing", "Dispatched", "Delivered", "Cancelled"];
 
     const handleDeleteClick = (id) => {
+        console.log("idd", id)
         setOrderToDelete(id);
         setIsModalOpen(true);
     };
 
+    useEffect(() => {
+        Api.get('api/products/products')
+
+            .then((response) => {
+                console.log("oder list", response.data)
+                setOrders(response.data)
+
+
+
+            })
+            .catch((error) => {
+                console.log("error", error)
+
+            })
+    }, [refreshKey])
+
     const confirmDelete = () => {
-        // Implement deletion logic here
-        console.log(`Order with ID ${orderToDelete} deleted.`);
-        setIsModalOpen(false);
-        setOrderToDelete(null);
+        Api.delete(`api/products/${orderToDelete}`)
+            .then(response => {
+                console.log("response", response)
+                if (response.status === 204 || response.status === 200) {
+                    console.log(`Product with ID ${orderToDelete} deleted.`);
+                    setIsModalOpen(false);
+                    setOrderToDelete(null);
+                    setRefreshKey(prev => prev + 1);
+                    // setOrders(orders.filter(order => order.id !== orderToDelete));
+                } else {
+                    console.error("Failed to delete the product.");
+                }
+            })
+
     };
 
-    const handleViewModal = (id) => {
-        setSelectProduct(id)
+    const handleViewModal = (product) => {
+        setSelectProduct(product)
         setIsViewModal(true)
+
 
     }
 
@@ -109,35 +135,37 @@ function Product() {
                     </div>
                 </div>
                 <div className="bg-white p-6 mt-8 rounded-lg h-full min-h-svh">
-                <div>
-                    <div className="">
-                        <div className="flex justify-between items-center">
-                           <div className=" flex">
-                                <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg items-center w-[584px] py-[12px] pl-4 text-[#696A70] flex">
-                                    <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
-                                    <input type="text" placeholder="Search" className="outline-none w-full" />
-                                </div>
-    
-                                <div className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
-    
-                                    {/* <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
+                    <div>
+                        <div className="">
+                            <div className="flex justify-between items-center">
+                                <div className=" flex">
+                                    <div className= "border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg items-center w-[584px] py-[12px] pl-4 text-[#2C2B2B] flex">
+                                        <img className="mr-2 w-4 h-4" src={SearchIcon} alt="" />
+                                        <input type="text" placeholder="Search" className="outline-none w-full" />
+                                    </div>
+                                  
+                                    
+
+                                    <button className="border hover:border-[#8F8F8F] focus-within:border-[#8F8F8F] rounded-lg w-[96px] py-[14px] pl-4 text-black flex ml-4">
+
+                                        {/* <div className="border rounded-lg w-[96px] py-[14px] pl-4 text-[#696A70] flex ml-4">
     
                                     <img className="mr-2" src={FilterIcon} alt="" />
                                     <input type="text" placeholder="Filter" className="outline-none w-full" />
                                 </div> */}
-                                <img className="mr-2" src={FilterIcon} alt="" />
-                                    <input type="text" placeholder="Filter" className="outline-none w-full placeholder:text-black" />
+                                        <img className="mr-2" src={FilterIcon} alt="" />
+                                        Filter
+                                    </button>
                                 </div>
-                           </div>
-                           <div >
-                                <div className="border hover:border-[#8F8F8F] rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
-                                    <img className="mr-2" src={Export} alt="" />
-                                    Export
+                                <div >
+                                    <div className="border hover:border-[#8F8F8F] rounded-lg py-[14px] px-4 text-[#2C2B2B] flex ml-4 cursor-pointer">
+                                        <img className="mr-2" src={Export} alt="" />
+                                        Export
+                                    </div>
                                 </div>
-                           </div>
-                        </div>
+                            </div>
 
-                        {/* <div className="bg-[#F0F0F0] px-1 py-1 w-fit mt-8 rounded-lg ">
+                            {/* <div className="bg-[#F0F0F0] px-1 py-1 w-fit mt-8 rounded-lg ">
                         <div className="flex">
                             {tabs.map((tab) => (
                                 <div
@@ -151,95 +179,98 @@ function Product() {
                         </div>
                     </div> */}
 
-                        {orders.length === 0 ? (
-                            <div className="flex flex-col items-center justify-center mt-[214px]">
-                                <img src={OrderListIsEmpty} alt="Empty Order List" className="w-[156px] h-[87px]" />
-                                <h1 className="text-[14px] font-normal mt-1 text-[#696A70]">Your order list is empty</h1>
-                            </div>
-                        ) : (
-                            <div className="mt-4">
-                                <table className="w-full bg-white mt-4 border">
-                                    <thead className="bg-[#F0F0F0] px-6 py-4">
-                                        <tr>
-                                            <th className="p-4 font-medium text-start text-sm flex items-center">
-                                                <img
-                                                    src={selectAllChecked ? checkedBox : checkBox}
-                                                    className="mr-4 cursor-pointer"
-                                                    alt="select all"
-                                                    onClick={toggleSelectAll}
-                                                />
-                                                Product ID
-                                            </th>
-                                            <th className="p-4 font-medium text-start text-sm">Product Detail</th>
-                                            <th className="p-4 font-medium text-start text-sm">Price</th>
-                                            <th className="p-4 font-medium text-start text-sm">Quantity</th>
-                                            <th className="p-4 font-medium text-start text-sm">Status</th>
-                                            <th className="p-4 font-medium text-start text-sm">Action</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {orders.map(({ ProductId, Price, ProductDetailems, ProductDescription, Brand, Quantity, status }) => (
-                                            <tr key={ProductId}>
-                                                <td className="p-4 font-medium text-start text-sm flex items-center">
-                                                    <img src={checkedItems[ProductId] ? checkedBox : checkBox} className="mr-4" alt=""
-                                                        onClick={() => toggleCheckbox(ProductId)} />
-                                                    {ProductId}</td>
-                                                <td className="p-4 font-medium text-start text-sm">{ProductDetailems}</td>
-                                                <td className="p-4 font-medium text-start text-sm">{Price}</td>
-                                                <td className="p-4 font-medium text-start text-sm">{Quantity}</td>
-                                                <td className="p-4 font-normal text-start text-[12px]">
-                                                    <button className={`py-1 px-4 rounded-lg ${statusStyles[status]}`}>{status}</button>
-                                                </td>
-                                                <td className="p-4 font-medium text-center justify-between items-start flex text-sm relative">
-                                                    <button
-                                                        onClick={() => handleViewModal({ ProductId, Price, ProductDetailems, Brand, ProductDescription, Quantity, status })}
-                                                        onMouseEnter={() => setHoverAction(`edit-${ProductId}`)}
-                                                        onMouseLeave={() => setHoverAction(null)}
-                                                        className="relative"
-                                                    >
-                                                        <img src={hoverAction === `edit-${ProductId}` ? eyeIconBlue : eyeIconBlack} alt="View" />
-                                                        {hoverAction === `edit-${ProductId}` && (
-                                                            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
-                                                                View
-                                                            </span>
-                                                        )}
-                                                    </button>
-
-                                                    <button
-                                                        onClick={() => handleDeleteClick(ProductId)}
-                                                        onMouseEnter={() => setHoverAction(`delete-${ProductId}`)}
-                                                        onMouseLeave={() => setHoverAction(null)}
-                                                        className="relative"
-                                                    >
-                                                        <img src={hoverAction === `delete-${ProductId}` ? Delete : deleteBlack} alt="Delete" />
-                                                        {hoverAction === `delete-${ProductId}` && (
-                                                            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
-                                                                Delete
-                                                            </span>
-                                                        )}
-                                                    </button>
-
-                                                    <button
-                                                        onMouseEnter={() => setHoverAction(`view-${ProductId}`)}
-                                                        onMouseLeave={() => setHoverAction(null)}
-                                                        className="relative"
-                                                    >
-                                                        <img src={hoverAction === `view-${ProductId}` ? editBlue : editBlack} alt="Edit" />
-                                                        {hoverAction === `view-${ProductId}` && (
-                                                            <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
-                                                                Edit
-                                                            </span>
-                                                        )}
-                                                    </button>
-                                                </td>
+                            {orders.length === 0 ? (
+                                <div className="flex flex-col items-center justify-center mt-[214px]">
+                                    <img src={OrderListIsEmpty} alt="Empty Order List" className="w-[156px] h-[87px]" />
+                                    <h1 className="text-[14px] font-normal mt-1 text-[#696A70]">Your order list is empty</h1>
+                                </div>
+                            ) : (
+                                <div className="mt-4">
+                                    <table className="w-full bg-white mt-4 border">
+                                        <thead className="bg-[#F0F0F0] px-6 py-4">
+                                            <tr>
+                                                <th className="p-4 font-medium text-start text-sm flex items-center">
+                                                    <img
+                                                        src={selectAllChecked ? checkedBox : checkBox}
+                                                        className="mr-4 cursor-pointer"
+                                                        alt="select all"
+                                                        onClick={toggleSelectAll}
+                                                    />
+                                                    Product ID
+                                                </th>
+                                                <th className="p-4 font-medium text-start text-sm">Product Detail</th>
+                                                <th className="p-4 font-medium text-start text-sm">Price</th>
+                                                <th className="p-4 font-medium text-start text-sm">Quantity</th>
+                                                <th className="p-4 font-medium text-start text-sm">Status</th>
+                                                <th className="p-4 font-medium text-start text-sm">Action</th>
 
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        )}
+                                        </thead>
+                                        <tbody>
+                                            {orders.map((product, index) => (
+                                                <tr key={index}>
+                                                    <td className="p-4 font-medium text-start text-sm flex items-center">
+                                                        <img src= {checkedItems[product.id] ? checkedBox : checkBox} className="mr-4 cursor-pointer" alt="select" onClick={() => toggleCheckbox(product.id)} />
+                                                        {product.id}   
+                                                    </td>
+                                                    <td className="p-4 font-medium text-start text-sm">{product.name}</td>
+                                                    <td className="p-4 font-medium text-start text-sm">AED  {product.price}</td>
+                                                    <td className="p-4 font-medium text-start text-sm">{product.stockQuantity}</td>
+                                                    <td className="p-4 font-normal text-start text-[12px]">
+                                                        <button className={`py-1 px-4 rounded-lg ${product.stockLow ? 'Out of Stock text-[#FF0000] bg-[#FFE7E7]' : 'In Stock text-[#29860A] bg-[#E1FDD7]'}`}>
+                                                            {product.stockLow ? 'Out of Stock' : 'In Stock'}
+                                                        </button>
+                                                    </td>
+
+                                                    <td className="p-4 font-medium text-center justify-between items-start flex text-sm relative">
+                                                        <button
+                                                            onClick={() => handleViewModal(product)}
+                                                            onMouseEnter={() => setHoverAction(`edit-${product.id}`)}
+                                                            onMouseLeave={() => setHoverAction(null)}
+                                                            className="relative"
+                                                        >
+                                                            <img src={hoverAction === `edit-${product.id}` ? eyeIconBlue : eyeIconBlack} alt="View" />
+                                                            {hoverAction === `edit-${product.id}` && (
+                                                                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
+                                                                    View
+                                                                </span>
+                                                            )}
+                                                        </button>
+
+                                                        <button
+                                                            onClick={() => handleDeleteClick(product.id)}
+                                                            onMouseEnter={() => setHoverAction(`delete-${product.id}`)}
+                                                            onMouseLeave={() => setHoverAction(null)}
+                                                            className="relative"
+                                                        >
+                                                            <img src={hoverAction === `delete-${product.id}` ? Delete : deleteBlack} alt="Delete" />
+                                                            {hoverAction === `delete-${product.id}` && (
+                                                                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
+                                                                    Delete
+                                                                </span>
+                                                            )}
+                                                        </button>
+
+                                                        <button
+                                                            onMouseEnter={() => setHoverAction(`view-${product.id}`)}
+                                                            onMouseLeave={() => setHoverAction(null)}
+                                                            className="relative"
+                                                        >
+                                                            <img src={hoverAction === `view-${product.id}` ? editBlue : editBlack} alt="Edit" />
+                                                            {hoverAction === `view-${product.id}` && (
+                                                                <span className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-1 px-2 py-1 bg-gray-800 text-white text-xs rounded whitespace-nowrap">
+                                                                    Edit
+                                                                </span>
+                                                            )}
+                                                        </button>
+                                                    </td>
+
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -278,17 +309,17 @@ function Product() {
                             </div>
                             <div className="flex mt-10">
                                 <div>
-                                    <img className="w-[210px] h-[210px] " src={ProductImg} alt="" />
+                                    <img className="w-[210px] h-[210px] " src={selectProduct.imageUrls[0]} alt="" />
                                 </div>
                                 <div className='ml-10'>
 
-                                    <div className="text-[16px] font-medium"> {selectProduct.ProductDetailems}</div>
-                                    <div className="text-[16px] text-[#787878] font-normal mt-2">{selectProduct.ProductDescription.split(' ').slice(0, 7).join(' ')}</div>
-                                    <div className="text-[16px] text-[#787878] font-normal">{selectProduct.ProductDescription.split(' ').slice(7).join(' ')}</div>
+                                    <div className="text-[16px] font-medium"> {selectProduct.name}</div>
+                                    <div className="text-[16px] text-[#787878] font-normal mt-2">{selectProduct.description}</div>
+                                    <div className="text-[16px] text-[#787878] font-normal">{ }</div>
                                     <div className="mt-8">
-                                        <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium " ><div>Brand:</div><div className="text-black">{selectProduct.Brand}</div></div>
-                                        <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium  "><div>Quantity:</div><div className="text-black">{selectProduct.Quantity}</div></div>
-                                        <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium " ><div>Price:</div><div className="text-black">{selectProduct.Price}</div></div>
+                                        <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium " ><div>Brand:</div><div className="text-black">{selectProduct.brand}</div></div>
+                                        <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium  "><div>Quantity:</div><div className="text-black">{selectProduct.stockQuantity}</div></div>
+                                        <div className="flex space-x-6 text-[16px] text-[#5E5E5E] font-medium " ><div>Price:</div><div className="text-black">{selectProduct.price}</div></div>
                                     </div>
                                 </div>
                             </div>
