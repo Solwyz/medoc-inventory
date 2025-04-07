@@ -269,16 +269,16 @@ function Orders() {
                 <option value="Rejected">Rejected</option>
               </select>
             </div>
-            <div className="mt-6 flex justify-end space-x-2">
+            <div className="mt-6 flex justify-end space-x-4">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 border border-[#E6E6E7]  rounded-lg text-sm"
+                className="px-4 text-center border h-10 border-[#E6E6E7]  rounded-lg text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={updateOrderStatus}
-                className="px-4 py-2 bg-[#6C55B2] text-white rounded-lg text-sm"
+                className="px-4 text-center  bg-[#6C55B2] h-10 text-white rounded-lg text-sm"
               >
                 Save Update
               </button>
