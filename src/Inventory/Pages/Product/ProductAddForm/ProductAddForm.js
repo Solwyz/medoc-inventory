@@ -19,7 +19,10 @@ function ProductAddForm() {
         createdDate: "",
         updatedDate: "",
         returnPolicy: "15 Days",
-        manufactureDetails: ""
+        brand: "",
+        manufactureDetails: "",
+        marketerDetails: "",
+        stockLow: false,
     });
 
     // Handle input changes
@@ -32,7 +35,8 @@ function ProductAddForm() {
     };
 
     // Handle form submission (console log the data)
-    const handleSave = () => {
+    const handleSave = (e) => {
+        // e.preventDefault()
         console.log("Form Data:", formData);
         Api.post('api/products',
             {
@@ -40,17 +44,22 @@ function ProductAddForm() {
                 "name": formData.productName,
                 "price": formData.salePrice,
                 "stockQuantity": formData.quantity,
+                "status": formData.status,
                 "description": formData.productDescription,
-                "manufacturerDetails": formData.manufactureDetails,
                 "createdDate": formData.createdDate,
                 "updatedDate": formData.updatedDate,
-                "image": formData.image,
-                "bestSeller": true,
-                "whishlist": true,
-
+                "manufacturerDetails": formData.manufactureDetails,
+                "marketerDetails": formData.marketerDetails,
+                "brand": formData.brand,
+                "expiryDate": "2025-04-07",
+                "imageUrls": [
+                    "string"
+                ],
+                "stockLow": "true"
             }
         )
             .then(response => {
+                console.log('Response:', response);
                 if (response && response.data) {
                     console.log('product added', response);
                 } else {
@@ -225,6 +234,17 @@ function ProductAddForm() {
                                     className="w-full mt-1 p-2 border rounded-lg"
                                 />
                             </div>
+                            <div>
+                                <label className="block text-sm font-normal">Brand</label>
+                                <input
+                                    type="text"
+                                    name="brand"
+                                    value={formData.brand}
+                                    onChange={handleChange}
+                                    className="placeholder:text-[14px] font-normal w-full mt-1 p-2 border rounded-lg"
+                                    placeholder="Enter brand name"
+                                />
+                            </div>
                         </div>
                         <div>
                             <label className="block text-sm font-normal">Return Policy</label>
@@ -249,6 +269,16 @@ function ProductAddForm() {
                                 rows="4"
                             ></textarea>
                         </div>
+                        <div>
+                            <label className="block text-sm font-normal">Marketer Details</label>
+                            <textarea
+                                name="marketerDetails"
+                                value={formData.marketerDetails}
+                                onChange={handleChange}
+                                className="w-full mt-1 p-2 border rounded-lg"
+                                rows="4"
+                            ></textarea>
+                        </div>
                     </div>
 
                     <div className='w-[30%] pl-7'>
@@ -265,7 +295,7 @@ function ProductAddForm() {
                             onChange={handleFileChange}
                             style={{ display: "none" }}
                         />
-    
+
                         {uploadedFile && (
                             <div className="mt-4 relative max-w-xs">
                                 <button
