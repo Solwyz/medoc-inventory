@@ -62,7 +62,7 @@ function Orders() {
 
   const updateOrderStatus = async () => {
     try {
-      await Api.post(`/api/order/${selectedOrder.id}`, { status: orderStatus });
+      await Api.post(`api/order/${selectedOrder.id}`, { status: orderStatus });
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === selectedOrder.id
@@ -205,60 +205,63 @@ function Orders() {
 
       {isModalOpen && selectedOrder && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-6 w-[400px] shadow-lg">
-            <div className="flex justify-between items-center border-b pb-2">
-              <h2 className="text-lg font-semibold">Order Details</h2>
+          <div className="bg-white rounded-lg p-6 w-[434px] shadow-lg">
+            <div className="flex justify-between items-center  border-b pb-2">
+              <h2 className="text-base text-[#180F32] font-medium">Order Details</h2>
               <button
                 onClick={closeModal}
-                className="text-gray-500 hover:text-black"
+                className="text-gray-500 hover:bg-[white]"
               >
                 ✕
               </button>
             </div>
-            <div className="mt-4 space-y-3 text-sm">
-              <p>
-                <strong>Product Name:</strong>{" "}
-                {selectedOrder.user.wishlist[0]?.product?.name}
-              </p>
-              <p>
-                <strong>Order ID:</strong> {selectedOrder.orderId}
-              </p>
-              <p>
-                <strong>Date of Order:</strong> {selectedOrder.orderDate}
-              </p>
-              <p>
-                <p>
-                  <strong>Items:</strong>{" "}
-                  {selectedOrder?.orderItems?.length > 0
-                    ? selectedOrder.orderItems
-                        .map((item) => `${item.quantity}`)
-                        .join(", ")
-                    : selectedOrder?.user?.cart?.length > 0
-                    ? selectedOrder.user.cart
-                        .map((item) => `${item.quantity}`)
-                        .join(", ")
-                    : "No Items"}
-                </p>
-              </p>
-              <p>
-                <strong>Payment Mode:</strong> {selectedOrder.paymentMode}
-              </p>
-              <p>
-                <strong>Expected Delivery:</strong>{" "}
-                {selectedOrder.expectedDelivery}
-              </p>
-              <p>
-                <strong>Amount:</strong> AED {selectedOrder.amount}
-              </p>
+            <div className="mt-8 space-y-4 font-normal text-base">
+              <div className="flex">
+                <h2 className="font-normal">Product Name</h2>
+               <p className="ml-[95px] text-[#6C6C6C] "> {selectedOrder.user.wishlist[0]?.product?.name}</p>
+              </div>
+              <div className="flex">
+                <h2 className="">Order ID</h2> <p className="text-[#6C6C6C] ml-[137px]">{selectedOrder.orderId}</p>
+              </div>
+              <div className="flex">
+                <h2>Date of Order</h2> <p className="text-[#6C6C6C] ml-[103px]">{selectedOrder.orderDate}</p>
+              </div>
+              
+                <div className="flex">
+                  <h2>Items</h2>{" "}
+                 <p className="text-[#6C6C6C] ml-[154px]">
+                    {selectedOrder?.orderItems?.length > 0
+                      ? selectedOrder.orderItems
+                          .map((item) => `${item.quantity}`)
+                          .join(", ")
+                      : selectedOrder?.user?.cart?.length > 0
+                      ? selectedOrder.user.cart
+                          .map((item) => `${item.quantity}`)
+                          .join(", ")
+                      : "No Items"}
+                 </p>
+                </div>
+             
+              <div className="flex">
+                <h2>Payment Mode</h2>
+                 <p className="text-[#6C6C6C] ml-[90px]">{selectedOrder.paymentMode}</p>
+              </div>
+              <div className="flex">
+                <h2>Expected Delivery</h2>{" "}
+                <p className="text-[#6C6C6C] ml-[73px]">{selectedOrder.expectedDelivery}</p>
+              </div>
+              <div className="flex">
+                <h2>Amount</h2> <p className="text-[#6C6C6C] ml-[137px]">AED {selectedOrder.amount}</p>
+              </div>
             </div>
-            <div className="mt-4">
-              <label className="block text-sm font-medium mb-1">
+            <div className="mt-[56px]">
+              <label className="block text-sm font-normal">
                 Order Status
               </label>
               <select
                 value={orderStatus}
                 onChange={(e) => setOrderStatus(e.target.value)}
-                className="w-full p-2 border rounded-lg text-sm"
+                className="w-[200px] p-2 border rounded-lg mt-2 focus:outline-none border-[#B9B9B9] text-sm"
               >
                 <option value="Pending">Pending</option>
                 <option value="Ongoing">Ongoing</option>
@@ -266,16 +269,16 @@ function Orders() {
                 <option value="Rejected">Rejected</option>
               </select>
             </div>
-            <div className="mt-6 flex justify-end space-x-2">
+            <div className="mt-6 flex justify-end space-x-4">
               <button
                 onClick={closeModal}
-                className="px-4 py-2 bg-gray-200 rounded-lg text-sm"
+                className="px-4 text-center border h-10 border-[#E6E6E7]  rounded-lg text-sm"
               >
                 Cancel
               </button>
               <button
                 onClick={updateOrderStatus}
-                className="px-4 py-2 bg-purple-600 text-white rounded-lg text-sm"
+                className="px-4 text-center  bg-[#6C55B2] h-10 text-white rounded-lg text-sm"
               >
                 Save Update
               </button>
