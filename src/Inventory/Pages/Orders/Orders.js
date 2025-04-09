@@ -10,6 +10,9 @@ function Orders() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [orderStatus, setOrderStatus] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  
+
 
   const tabs = [
     "New orders",
@@ -32,6 +35,26 @@ function Orders() {
     Cancelled: "CANCELLED",
     Return: "RETURN",
   };
+  const filteredOrders = orders.filter((order) => {
+    const search = searchTerm.toLowerCase();
+  
+    const productNames = [
+      ...order.orderItems?.map((item) => item?.product?.name || ""),
+      ...order.user?.cart?.map((item) => item?.product?.name || ""),
+    ]
+      .join(", ")
+      .toLowerCase();
+  
+    const orderIdMatch = order.orderId?.toLowerCase().includes(search);
+  
+    return orderIdMatch || productNames.includes(search);
+  });
+  
+  
+
+  
+  
+  
 
   const fetchOrders = async (status) => {
     try {
@@ -41,13 +64,16 @@ function Orders() {
           ? "api/order"
           : `api/order/status/${apiStatus}`;
       const response = await Api.get(url);
-      console.log("API Response:", response.data); // Debugging
-      setOrders(Array.isArray(response.data.data) ? response.data.data : []);
+      const data = Array.isArray(response.data.data) ? response.data.data : [];
+  
+      const reversedData = data.reverse(); // Newest first
+      setOrders(reversedData);
     } catch (error) {
       console.error("Error fetching orders:", error);
       setOrders([]);
     }
   };
+  
 
   const openModal = (order) => {
     setSelectedOrder(order);
@@ -62,7 +88,13 @@ function Orders() {
 
   const updateOrderStatus = async () => {
     try {
-      await Api.post(`api/order/${selectedOrder.id}`, { status: orderStatus });
+      const updatedData = {
+        ...selectedOrder,
+        status: orderStatus
+      };
+  
+      const response = await Api.put(`api/order/${selectedOrder.id}`, updatedData);
+  
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.id === selectedOrder.id
@@ -75,6 +107,7 @@ function Orders() {
       console.error("Error updating order status:", error);
     }
   };
+  
 
   return (
     <div className="bg-[#f7f7f7] w-full min-w-max min-h-svh h-full">
@@ -89,6 +122,8 @@ function Orders() {
               <div className="relative w-[584px]">
                 <input
                   type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search Product, Product ID"
                   className="border border-[#D5D5D5] focus:outline-[#75689C] text-[#696A70] text-sm font-normal rounded-lg p-2 pl-10 w-full h-[48px]"
                 />
@@ -98,7 +133,7 @@ function Orders() {
                   className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
                 />
               </div>
-              <button className="border border-[#D5D5D5] hover:border-[#8F8F8F] flex items-center font-normal text-sm text-[#2C2B2B] p-2 ml-2 rounded-lg w-[87px] h-[48px]">
+              <button  className="border border-[#D5D5D5] hover:border-[#8F8F8F] flex items-center font-normal text-sm text-[#2C2B2B] p-2 ml-2 rounded-lg w-[87px] h-[48px]">
                 <img src={FilterIcon} className="mr-2" alt="Filter" /> Filter
               </button>
             </div>
@@ -161,7 +196,7 @@ function Orders() {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order) => (
+                  {filteredOrders.map((order) => (
                     <tr
                       key={order.id}
                       onClick={() => openModal(order)}
@@ -263,10 +298,11 @@ function Orders() {
                 onChange={(e) => setOrderStatus(e.target.value)}
                 className="w-[200px] p-2 border rounded-lg mt-2 focus:outline-none border-[#B9B9B9] text-sm"
               >
-                <option value="Pending">Pending</option>
-                <option value="Ongoing">Ongoing</option>
-                <option value="Completed">Completed</option>
-                <option value="Rejected">Rejected</option>
+                <option value="PENDING">Pending</option>
+                <option value="ONGOING">Ongoing</option>
+                <option value="COMPLETED">Completed</option>
+                <option value="CANCELLED">Rejected</option>
+                <option value="RETURN">Return</option>
               </select>
             </div>
             <div className="mt-6 flex justify-end space-x-4">
