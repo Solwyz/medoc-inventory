@@ -11,6 +11,7 @@ import Product from './Inventory/Pages/Product/Product';
 import ProductAddForm from './Inventory/Pages/Product/ProductAddForm/ProductAddForm';
 
 function App() {
+
   return (
     <div className="App font-AnekLatin ">
 
