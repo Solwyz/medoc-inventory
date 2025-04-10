@@ -25,6 +25,8 @@ function ProductAddForm() {
         stockLow: false,
     });
 
+    const [addedModal, setAddedModal] = useState(false);
+
     // Handle input changes
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -62,6 +64,7 @@ function ProductAddForm() {
                 console.log('Response:', response);
                 if (response && response.data) {
                     console.log('product added', response);
+                    
                 } else {
                     console.error('Error adding product:', response);
                 }
