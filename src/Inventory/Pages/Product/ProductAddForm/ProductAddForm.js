@@ -105,10 +105,12 @@ function ProductAddForm() {
                         </div>
                     </Link>
                     <div className="flex">
-                        <div className="border border-[#D5D5D5] bg-white rounded-lg py-[12px] px-4 text-[#696A70] flex items-center">
-                            <img className="mr-2 w-4 h-4" src={Cancel} alt="Cancel" />
-                            Cancel
-                        </div>
+                        <Link to="/product">
+                            <div className="border border-[#D5D5D5] bg-white rounded-lg py-[12px] px-4 text-[#696A70] flex items-center">
+                                <img className="mr-2 w-4 h-4" src={Cancel} alt="Cancel" />
+                                Cancel
+                            </div>
+                        </Link>
                         <button
                             onClick={handleSave}
                             className="border rounded-lg py-[13px] px-[16px] text-[14px] font-normal text-white ml-4 hover:bg-[#415BAD] bg-[#304BA0] flex items-center"
