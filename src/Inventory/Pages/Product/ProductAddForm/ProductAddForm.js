@@ -55,7 +55,7 @@ function ProductAddForm() {
                 "imageUrls": [
                     "string"
                 ],
-                "stockLow": "true"
+                "stockLow": formData.status
             }
         )
             .then(response => {
@@ -174,8 +174,8 @@ function ProductAddForm() {
                                     onChange={handleChange}
                                     className="w-full mt-1 p-2 border rounded-lg text-[14px] font-normal"
                                 >
-                                    <option value="In Stock">In Stock</option>
-                                    <option value="Out of Stock">Out of Stock</option>
+                                    <option value="false">In Stock</option>
+                                    <option value="true">Out of Stock</option>
                                 </select>
                             </div>
                         </div>
