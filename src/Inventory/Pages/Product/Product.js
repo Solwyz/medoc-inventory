@@ -106,7 +106,7 @@ function Product() {
 
     };
 
-    const handleViewModal = (product) => {
+    const handleViewModal = (product) => { 
         setSelectProduct(product)
         setIsViewModal(true)
 
@@ -208,12 +208,12 @@ function Product() {
                                         </thead>
                                         <tbody>
                                             {orders.map((product, index) => (
-                                                <tr key={index}>
+                                                <tr className="hover:bg-[#F6F6F6]" key={index}>
                                                     <td className="p-4 font-medium text-start text-sm flex items-center">
                                                         <img src= {checkedItems[product.id] ? checkedBox : checkBox} className="mr-4 cursor-pointer" alt="select" onClick={() => toggleCheckbox(product.id)} />
                                                         {product.id}   
                                                     </td>
-                                                    <td className="p-4 font-medium text-start text-sm">{product.name}</td>
+                                                    <td className="p-4 font-medium text-start text-sm ">{product.name}</td>
                                                     <td className="p-4 font-medium text-start text-sm">AED  {product.price}</td>
                                                     <td className="p-4 font-medium text-start text-sm">{product.stockQuantity}</td>
                                                     <td className="p-4 font-normal text-start text-[12px]">
